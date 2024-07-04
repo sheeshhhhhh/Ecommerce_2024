@@ -9,7 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "clear-background" : "#ececec"
+        "clear-background" : "#ececec",
+        "input-border" : "#bbb"
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
