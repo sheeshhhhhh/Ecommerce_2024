@@ -14,7 +14,7 @@ const NavBar = ({
 }) => {
 
   return (
-    <div className='flex bg-transparent mx-20 p-2 justify-between items-center '>
+    <div className='flex bg-transparent mx-40 p-2 justify-between items-center '>
         <Link href={'/'}
         aria-label='Logo' className='cursor-pointer'>
             <h2 className='font-bold text-3xl'>Ecommerce</h2>

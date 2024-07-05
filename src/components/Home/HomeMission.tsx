@@ -21,7 +21,7 @@ const HomeMission = () => {
                     <div className='bg-[#023047] w-[360px] h-[230px] absolute
                     left-1 bottom-[-40px] rounded-xl p-7'>
                         <h2 className='font-semibold text-white text-xl mb-1'>Elon Reeve Musk</h2>
-                        <p className='font-medium text-white mb-3'>Ceo of Ecommerce</p>
+                        <p className='pl-2 text-white mb-3'>Ceo of Ecommerce</p>
                         <p className='text-white'>"I will try my best to make this companies mission came to reality
                             and i will try to make delivery of online shoppings fast and safe"</p>
                     </div>
