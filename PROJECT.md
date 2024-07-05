@@ -24,3 +24,7 @@ bcrypt -for password hashing
 Sentry - for tracking and monitoring
 Zustand - for global state management
 socketio - for notificatin but should be last
+
+
+#format hashPassword
+const hashPassword = bcrypt.hashSync(password, 10)

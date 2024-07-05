@@ -11,7 +11,7 @@ import bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
 
-const authoptions: AuthOptions = {
+export const authoptions: AuthOptions = {
     adapter: PrismaAdapter(prisma) as Adapter,
     providers: [
         GoogleProvider({
@@ -25,7 +25,6 @@ const authoptions: AuthOptions = {
                 password: { label: "Password", type: "password"},
             },
             authorize: async (credentials, req) => {
-                console.log(credentials)
                 if(!credentials?.password || !credentials.username) return null
                 const user = await prisma.user.findFirst({
                     where: {
@@ -34,9 +33,8 @@ const authoptions: AuthOptions = {
                 })
                 // check if user exist and password exist(if not then it meant that it is an Oauth)
                 if(!user || !user.password) return null
-
                 const verifiedPassword = bcrypt.compareSync(credentials?.password, user.password)
-
+                console.log(user)
                 if(!verifiedPassword) return null
 
                 return user // giving the user
@@ -45,9 +43,16 @@ const authoptions: AuthOptions = {
     ],
     session: {
         strategy: "jwt",
-    }, // add secret later
+    },
+    secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
+        async session({ token, session}) {
+            if(token) {
+                session.user.id = token.sub as string // this is the id (token.sub)
+            }
 
+            return session
+        }
     },
     // pages: {
     //     signIn: '/login',
