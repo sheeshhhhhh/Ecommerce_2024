@@ -29,7 +29,5 @@ export async function getUser(id: string | undefined) {
         }
     })
 
-    console.log(getUserInfo)
-
     return getUserInfo
 }

@@ -6,20 +6,23 @@ import { getUser } from './getUser'
 
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import PrivateInfo from './PrivateInfo'
+import { Gender } from '@prisma/client'
 
-enum Gender {
-    'Male', 'Female', 'Other'
-}
 
-type UserInfoType = {
-    name: string | null,
-    email: string | null,
-    image: string | null,
+export type privateInfoType = {
     phoneNumber: number | null,
     address: string | null,
     gender: Gender | null,
     birthday: string | null,
-    createdAt: Date
+}
+
+export interface UserInfoType  {
+    name: string | null;
+    email: string | null;
+    image: string | null;
+    createdAt: Date;
+    userInfo: privateInfoType | null;
 }
 
 const page = async () => {
@@ -28,7 +31,7 @@ const page = async () => {
 
     const getuser = await getUser(session?.user.id)
     if(!getuser) return
-    const userInfo: any = getuser
+    const userInfo: UserInfoType = getuser
     
     return (
         <div className='min-h-screen '>
@@ -46,12 +49,15 @@ const page = async () => {
                             </Link>
                         </p>
                     </div>
-                    <div className='p-3 pl-16 flex flex-col'>
+                    <div className='p-3 pl-16 flex flex-col gap-2'>
                         <h2 className='text-lg font-bold'>{userInfo?.name}</h2>
                         <h2 className='text-lg font-bold'>{userInfo?.email}</h2>                        
                     </div>
                     <div className='ml-2'>
-                            <h2 className='text-xl font-bold'>Private Info</h2>
+                        <h2 className='text-xl font-bold'>Private Info</h2>
+                        {
+                            userInfo.userInfo && <PrivateInfo privateInfo={userInfo.userInfo} />
+                        }
                     </div>
                 </div>
             </div>
