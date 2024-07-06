@@ -21,7 +21,7 @@ model User {
   emailVerified DateTime?
   image         String?
   accounts      Account[]
-  sessions      Session[] 
+  sessions      Session[]
   // Optional for WebAuthn support
  
   createdAt DateTime @default(now())
@@ -57,5 +57,28 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+// not yet tested schemas
+
+model Business {
+  id   String   @id @default(cuid())
+  BusinessName String   @unique
+  description  String?
+  Items        Item[]
+
+  createdAt DateTime @default(now())
+}
+
+model Item {
+  item_id      String   @unique
+  name         String
+  description  String?
+  price        String
+  quantity     String?
+  BusinessId   String
+  business     Business  @relation(fields: [BusinessId], references: [id], onDelete: Cascade)
+  
+  createAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

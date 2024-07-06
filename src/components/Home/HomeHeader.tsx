@@ -2,6 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 
 import Ecommerce_Header from '../../../public/Ecommerce_Header.png'
+import Link from 'next/link'
 
 const HomeHeader = () => {
   return (
@@ -18,6 +19,11 @@ const HomeHeader = () => {
                     better and faster. We Deliver the products in an average of 1 day per order and max is a week.
                     We are also making sure your private data is safe and preventing scammer as much as possible.
                 </p>
+                <Link className='p-4 w-[200px] ml-4 mt-5 rounded-full bg-white font-bold text-lg text-center
+                hover:bg-gray-300'
+                href={'/explore'}>
+                    Explore
+                </Link>
             </div>
         </div>
     </div>
