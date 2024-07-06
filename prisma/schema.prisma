@@ -71,11 +71,12 @@ model Business {
 }
 
 model Item {
-  item_id      String   @unique
+  item_id           String   @unique @default(cuid())
+  Photo        String
   name         String
   description  String?
-  price        String
-  quantity     String?
+  price        Int
+  quantity     Int
   BusinessId   String
   business     Business  @relation(fields: [BusinessId], references: [id], onDelete: Cascade)
   

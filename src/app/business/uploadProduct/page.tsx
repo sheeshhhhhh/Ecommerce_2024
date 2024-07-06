@@ -2,6 +2,7 @@ import Input from '@/components/Input'
 import React from 'react'
 import PriceInput from './PriceInput'
 import FileInput from './FileInput'
+import { UploadProduct } from './UploadProduct.action'
 
 const page = () => {
 
@@ -10,7 +11,7 @@ const page = () => {
         <div className='h-screen flex justify-center items-center'>
             <form 
             className='flex gap-2 bg-white p-4 rounded-lg' 
-            action="/api/upload">
+            action={UploadProduct}>
                 <div className='bg-white h-[320px] w-full'>
                     <FileInput />
                 </div>
@@ -22,9 +23,9 @@ const page = () => {
                             <span className='ml-8'>Price</span>
                             <PriceInput id='price' name='price' />
                         </label>
-                        <label className='w-[150px] font-semibold' htmlFor="price">
+                        <label className='w-[150px] font-semibold' htmlFor="quantity">
                             <span className='ml-8'>Quantity</span>
-                            <PriceInput id='price' name='quantity' />
+                            <PriceInput id='quantity' name='quantity' />
                         </label>
                     </div>
                     <div className='flex justify-center'>
