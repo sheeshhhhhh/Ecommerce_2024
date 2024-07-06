@@ -19,7 +19,10 @@ const NavBar = ({
         aria-label='Logo' className='cursor-pointer'>
             <h2 className='font-bold text-3xl'>Ecommerce</h2>
         </Link>
-        <div className=''>
+        <div className='flex gap-4 items-center'>
+            <Link 
+            className='font-semibold text-xl hover:underline hover:underline-offset-2'
+            href={'/explore'}>Explore</Link>
             {userInfo ? 
             <UserIcon image={userInfo?.image} name={userInfo?.name} /> : 
             <Link 
@@ -44,12 +47,21 @@ const UserIcon = ({
                 <Image
                 className='rounded-full'
                 src={image ? image : ''} 
-                alt={name ? name : 'usericon'} 
+                alt={'.'} 
                 />
             </summary>
             <div className='bg-white p-2 pr-4 rounded-md flex flex-col gap-1 absolute'>
-                <div aria-label=''>
-
+                <div 
+                className='px-2 hover:bg-gray-400 rounded-md'
+                aria-label='Profile'>
+                    <Link 
+                    className='font-semibold flex items-center'
+                    href={'/profile'}>
+                        <Image 
+                        className='size-[20px] mr-1'
+                        src={Settings_Icon} alt="" />
+                        profile 
+                    </Link>
                 </div>
                 <div 
                 className='px-2 hover:bg-gray-400 rounded-md'

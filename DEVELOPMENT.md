@@ -2,3 +2,6 @@
 
 UPLOADITEM ROUTE IS STILL NOT FINISH BECAUSE BUSINESSID CONSTRAINT
 #PROBLEM IS WE STILL DON'T HAVE BUSINESS ID
+
+#FIX LATER
+make a DB folder that stores in the prisma client so that we just need to import and not initialized all

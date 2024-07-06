@@ -13,6 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Gender {
+  Male
+  Female
+  Other
+}
+
 model User {
   id            String          @id @default(cuid())
   name          String?
@@ -20,10 +26,26 @@ model User {
   email         String          @unique
   emailVerified DateTime?
   image         String?
+  userInfo      UserInfo?
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserInfo { // supposed to be private
+  id           String          @id @default(cuid())
+  userId       String          @unique
+  phoneNumber  Int?            @unique
+  address      String?
+  gender       Gender?         
+  birthday     String?
+  cartItems    Item[]
+
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -77,8 +99,12 @@ model Item {
   description  String?
   price        Int
   quantity     Int
+
   BusinessId   String
   business     Business  @relation(fields: [BusinessId], references: [id], onDelete: Cascade)
+
+  userInfoId   String
+  userInfo     UserInfo?  @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
   
   createAt DateTime @default(now())
   updatedAt DateTime @updatedAt

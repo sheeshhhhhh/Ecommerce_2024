@@ -22,7 +22,7 @@ const CartsModal = ({
   )
 }
 
-const ViewCartModal = async ({
+const ViewCartModal =  ({
     open,
     setOpen
 }: {
@@ -30,9 +30,7 @@ const ViewCartModal = async ({
     setOpen: Dispatch<SetStateAction<boolean>>
 }) => {
     const session = useSession()
-    if(!session.data) return
-    const cartItems = await getCartItems(session.data?.user?.id)
-
+    // if(!session?.data?.user) return setOpen(false)
 
     return (
         <div className="fixed h-screen w-full inset-0 z-20 overflow-hidden">
