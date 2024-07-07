@@ -20,32 +20,33 @@ enum Gender {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
   password      String?
-  email         String          @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
   userInfo      UserInfo?
+  business      Business?
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model UserInfo { // supposed to be private
-  id           String          @id @default(cuid())
-  userId       String          @unique
-  phoneNumber  Int?            @unique
-  address      String?
-  gender       Gender?         
-  birthday     String?
-  cartItems    Item[]
+model UserInfo {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  phoneNumber Int?    @unique
+  address     String?
+  gender      Gender?
+  birthday    String?
+  cartItems   Item[]
 
-  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -62,50 +63,53 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([provider, providerAccountId])
 }
-
 
 model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
 // not yet tested schemas
 
 model Business {
-  id   String   @id @default(cuid())
-  BusinessName String   @unique
+  id           String  @id @default(cuid())
+  ownerId      String  @unique
+  BusinessName String  @unique
   description  String?
   Items        Item[]
+
+  owner        User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 }
 
 model Item {
-  item_id           String   @unique @default(cuid())
-  Photo        String
-  name         String
-  description  String?
-  price        Int
-  quantity     Int
+  item_id     String  @unique @default(cuid())
+  Photo       String
+  name        String
+  description String?
+  price       Int
+  quantity    Int
 
-  BusinessId   String
-  business     Business  @relation(fields: [BusinessId], references: [id], onDelete: Cascade)
+  BusinessId String
+  business   Business @relation(fields: [BusinessId], references: [id], onDelete: Cascade)
 
-  userInfoId   String
-  userInfo     UserInfo?  @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
-  
-  createAt DateTime @default(now())
+  userInfoId String
+  userInfo   UserInfo? @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
+
+  createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

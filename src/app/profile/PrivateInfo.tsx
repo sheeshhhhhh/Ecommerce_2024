@@ -1,8 +1,10 @@
 import Link from 'next/link'
+
 import DiplayGender from './DiplayGender'
 import DisplayAddress from './DisplayAddress'
 import DisplayBirthday from './DisplayBirthday'
 import DisplayPhoneNumber from './DisplayPhoneNumber'
+
 import { privateInfoType } from './page'
 
 
@@ -28,7 +30,7 @@ const PrivateInfo = ({
           <Link 
           className='text-blue-700 hover:underline hover:underline-offset-2 font-medium'
           href={'/settings/business'}>
-            Business Settings
+            Create Business
           </Link>
         </h2>
       </div>

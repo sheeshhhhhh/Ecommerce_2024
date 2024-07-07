@@ -44,7 +44,7 @@ const page = async () => {
                             Profile Info Manage Account? {" "}
                             <Link 
                             className='text-blue-700 font-medium hover:underline hover:underline-offset-2'
-                            href={'/settings/profile'}>
+                            href={'/settings/editProfile'}>
                                 Edit Profile
                             </Link>
                         </p>
