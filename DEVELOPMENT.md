@@ -5,3 +5,8 @@ UPLOADITEM ROUTE IS STILL NOT FINISH BECAUSE BUSINESSID CONSTRAINT
 
 #FIX LATER
 make a DB folder that stores in the prisma client so that we just need to import and not initialized all
+
+
+DATE FORMAT AS STRING
+"DD_MM_YYYY" // use underscore so that you can split the string late
+// not yes tested

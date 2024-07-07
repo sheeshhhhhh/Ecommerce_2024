@@ -50,14 +50,20 @@ const page = async () => {
                         </p>
                     </div>
                     <div className='p-3 pl-16 flex flex-col gap-2'>
-                        <h2 className='text-lg font-bold'>{userInfo?.name}</h2>
-                        <h2 className='text-lg font-bold'>{userInfo?.email}</h2>                        
+                        {/* Make avatar here later */}
+                        <div className='flex gap-2 items-center'>
+                            <h2 className='text-[#555555cc] font-bold text-lg w-[56.22px]'>Name: </h2>
+                            <p className='font-semibold'>{userInfo?.name}</p>
+                        </div>
+                        <div className='flex gap-2 items-center'>
+                            <h2 className='text-[#555555cc] font-bold text-lg w-[56.22px]'>Email: </h2>
+                            <p className='font-semibold'>{userInfo?.email}</p>
+                        </div>                     
                     </div>
                     <div className='ml-2'>
                         <h2 className='text-xl font-bold'>Private Info</h2>
-                        {
-                            userInfo.userInfo && <PrivateInfo privateInfo={userInfo.userInfo} />
-                        }
+                        <p className='text-input-border mb-3'>These are your private informations</p>
+                        <PrivateInfo privateInfo={userInfo.userInfo} />
                     </div>
                 </div>
             </div>
