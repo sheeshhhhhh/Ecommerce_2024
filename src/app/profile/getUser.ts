@@ -29,5 +29,7 @@ export async function getUser(id: string | undefined) {
         }
     })
 
+    if(!getUserInfo) throw new Error("error in the getUser Action")
+
     return getUserInfo
 }

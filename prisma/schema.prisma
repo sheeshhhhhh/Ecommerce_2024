@@ -82,7 +82,6 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
-// not yet tested schemas
 
 model Business {
   id           String  @id @default(cuid())

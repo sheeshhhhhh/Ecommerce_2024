@@ -28,3 +28,9 @@ socketio - for notificatin but should be last
 
 #format hashPassword
 const hashPassword = bcrypt.hashSync(password, 10)
+
+DO LATER!!!
+MODEL OF BUSINESS IN PRISMA
+Orders By client(Different from items)
+Rating
+Reviews LATER

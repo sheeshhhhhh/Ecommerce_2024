@@ -28,6 +28,8 @@ const CreateBusiness = async (userId: string , formData: FormData) => {
         }
     })
 
+    if(!prismaCreateBusiness) throw new Error("error in the CreateBusiness Action")
+
     //revalidate path to the user business
     return prismaCreateBusiness
 }

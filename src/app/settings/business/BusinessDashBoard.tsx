@@ -1,8 +1,24 @@
+import { Business } from '@prisma/client'
 import React from 'react'
+import BusinessInfo from './BusinessDashBoard/BusinessInfo'
 
-const BusinessDashBoard = () => {
+
+
+const BusinessDashBoard = ({
+    business
+} : {
+    business: Business
+}) => {
   return (
-    <div>BusinessDashBoard</div>
+    <div>
+        <BusinessInfo
+        id={business.id}
+        description={business.description}
+        category={business.category}
+        contactNumber={business.contactNumber}
+        email={business.email}
+        />
+    </div>
   )
 }
 
