@@ -28,3 +28,16 @@ socketio - for notificatin but should be last
 
 #format hashPassword
 const hashPassword = bcrypt.hashSync(password, 10)
+
+
+MODEL OF BUSINESS IN PRISMA
+Business Name
+description
+LOGO for the business
+banner color refercence on DISKORD APP GITHUB
+category
+ContactNumber
+Email For notification
+Orders By client(Different from items)
+Rating
+Reviews LATER

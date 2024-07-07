@@ -5,13 +5,13 @@ import { useState } from 'react';
 
 const FileInput = () => {
     const [url, setUrl] = useState<string>("")
-    console.log(url)
+
     return (
     <div className="w-[300px] border-dashed border-[2px] rounded-lg">
       <UploadDropzone
         config={{
             mode: 'auto'
-          }}
+        }}
         className='h-[300px]'
         endpoint="imageUploader"
         onClientUploadComplete={(res: any) => {

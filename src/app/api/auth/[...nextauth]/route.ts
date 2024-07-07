@@ -34,7 +34,7 @@ export const authoptions: AuthOptions = {
                 // check if user exist and password exist(if not then it meant that it is an Oauth)
                 if(!user || !user.password) return null
                 const verifiedPassword = bcrypt.compareSync(credentials?.password, user.password)
-                console.log(user)
+
                 if(!verifiedPassword) return null
 
                 return user // giving the user

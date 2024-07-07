@@ -1,6 +1,8 @@
 import { authoptions } from "@/app/api/auth/[...nextauth]/route"
 import { PrismaClient } from "@prisma/client"
 import { getServerSession } from "next-auth"
+import CreateBusiness from "./CreateBusiness"
+import BusinessDashBoard from "./BusinessDashBoard"
 
 const page = async () => {
 
@@ -13,14 +15,16 @@ const page = async () => {
     if(!userinfo) return { error: "Not Authenticated" }
 
     const businessInfo = await prisma.business.findFirst({
-      where: 
+      where: {
+        ownerId: userinfo.id
+      }
     })
 
-    return session
+    return businessInfo
   }
 
-  const getbusiness = await getBusiness()
-  console.log(getbusiness)
+  const business = await getBusiness()
+
   return (
     <div>
       <div className='my-4 pl-14'>
@@ -28,7 +32,8 @@ const page = async () => {
       </div>
       <div className='py-12 px-10'>
         <div className='w-[600px]'>
-          Create A business
+          {!business && <CreateBusiness /> } 
+          {business && <BusinessDashBoard />}
         </div>
       </div>
     </div>
