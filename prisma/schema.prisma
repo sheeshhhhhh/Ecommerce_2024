@@ -87,10 +87,17 @@ model Session {
 model Business {
   id           String  @id @default(cuid())
   ownerId      String  @unique
-  BusinessName String  @unique
-  description  String?
-  Items        Item[]
 
+  businessName String  @unique
+  description  String?
+  category     String?
+  contactNumber String @unique
+  email        String? 
+  logoUrl      String
+  CoverPhotoUrl String?
+
+
+  Items        Item[]
   owner        User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())

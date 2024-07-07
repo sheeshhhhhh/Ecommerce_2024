@@ -19,16 +19,6 @@ const CreateBusiness = () => {
         <div>
             <h2 className='mb-3 text-lg font-bold'>Business Form</h2>
             <CreateBusinessForm />
-            {/* 
-                #INPUTS!!!
-                Business Name
-                description
-                LOGO for the business
-                banner color refercence on DISKORD APP GITHUB
-                category
-                ContactNumber
-                Email For notification
-             */}
         </div>
     </div>
   )
