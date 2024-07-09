@@ -1,6 +1,7 @@
 "use server"
 
 import { PrismaClient } from "@prisma/client"
+import { revalidatePath } from "next/cache"
 
 const prisma = new PrismaClient()
 
@@ -29,7 +30,6 @@ export const updateBusinessinfo = async (businessId: string, formData: FormData)
 
     if(!prismaUpdateBusinessinfo) throw new Error("error in the updateBusinessinfo action")
 
-    console.log(prismaUpdateBusinessinfo)
 
-    return prismaUpdateBusinessinfo
+    return revalidatePath('/settings/business')
 }

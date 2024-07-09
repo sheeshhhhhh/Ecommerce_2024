@@ -1,6 +1,9 @@
 import type { Config } from "tailwindcss";
 import { withUt } from 'uploadthing/tw'
 
+// for css animation plugin docs
+// https://github.com/jamiebuilds/tailwindcss-animate?tab=readme-ov-file
+
 const config: Config = withUt({
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -21,6 +24,8 @@ const config: Config = withUt({
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("tailwindcss-animate"),
+  ],
 });
 export default config;

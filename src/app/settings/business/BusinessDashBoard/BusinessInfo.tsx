@@ -3,12 +3,13 @@
 import Input from "@/components/Input"
 import { updateBusinessinfo } from "./BusinessUpdate.action"
 import { useEffect, useState } from "react"
+import SaveButton from "./SaveButton"
 
 type businessInfoType = {
-  description: string,
-  category: string,
+  description: string | null,
+  category: string | null,
   contactNumber: string,
-  email: string,
+  email: string | null,
   id: string
 }
 
@@ -19,15 +20,23 @@ const BusinessInfo = ({
   email,
   id
 } : businessInfoType) => {
-  const [info, setInfo] = useState<businessInfoType>({
+  const [info, setInfo] = useState<any>({
     description: description || "",
     category: category || "",
     contactNumber: contactNumber,
     email: email || "",
-    id: id // id is not needed but its on the type so i put it
   })
   const [changed, setChanged] = useState<boolean>(false)
   const updatebusinessInfo = updateBusinessinfo.bind(null, id)
+
+  const resetFunction = () => {
+    setInfo({
+      description: description || "",
+      category: category || "",
+      contactNumber: contactNumber,
+      email: email || "",
+    })
+  }
 
   useEffect(() => {
     if(description !== info.description) return setChanged(true)
@@ -40,7 +49,7 @@ const BusinessInfo = ({
 
   return (
     <div>
-      <form action={updatebusinessInfo}>
+      <form action={updatebusinessInfo} >
         <div>
           <div>
             <Input 
@@ -52,6 +61,7 @@ const BusinessInfo = ({
             />
           </div>
           <div>
+            {/* possible to put in the side and make a content editable div */}
             <Input 
             label="Description"
             name="description"
@@ -79,7 +89,7 @@ const BusinessInfo = ({
             />
           </div>
         </div>
-        {changed && <button type='submit'>save</button>}
+        <SaveButton resetFunction={resetFunction} changed={changed} />
       </form>
     </div>
   )
