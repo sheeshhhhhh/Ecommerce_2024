@@ -6,7 +6,6 @@ import { UploadProduct } from './UploadProduct.action'
 
 const page = () => {
 
-
     return (
         <div className=''>
             {/* centralized later on */}

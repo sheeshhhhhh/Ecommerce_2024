@@ -24,11 +24,20 @@ export const authoptions: AuthOptions = {
                 username: { label: "Username", type: "text", placeholder: "renn44"},
                 password: { label: "Password", type: "password"},
             },
-            authorize: async (credentials, req) => {
+            authorize: async (credentials, req): Promise<any> => {
                 if(!credentials?.password || !credentials.username) return null
                 const user = await prisma.user.findFirst({
                     where: {
                         name: credentials?.username
+                    },
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        image: true,
+                        password: true,
+                        business: true,
+                        userInfo: true
                     }
                 })
                 // check if user exist and password exist(if not then it meant that it is an Oauth)
@@ -36,8 +45,8 @@ export const authoptions: AuthOptions = {
                 const verifiedPassword = bcrypt.compareSync(credentials?.password, user.password)
 
                 if(!verifiedPassword) return null
-
-                return user // giving the user
+                console.log(user)
+                return user 
             }
         })
     ],
@@ -46,8 +55,18 @@ export const authoptions: AuthOptions = {
     },
     secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
+        async jwt({ token, user })  {
+            if(user) {
+                token.businessId = user.business?.id,
+                token.userInfo = user.userInfo
+            }
+
+            return token
+        },
         async session({ token, session}) {
             if(token) {
+                session.user.userInfo = token.userInfo || undefined // still has no userInfo
+                session.user.businessId = token.businessId as string // token.business is and id of the business look at the next-auth.type
                 session.user.id = token.sub as string // this is the id (token.sub)
             }
 

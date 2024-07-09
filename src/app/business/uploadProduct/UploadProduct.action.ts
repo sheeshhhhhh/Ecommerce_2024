@@ -1,18 +1,23 @@
 "use server"
+import { authoptions } from "@/app/api/auth/[...nextauth]/route"
 import { PrismaClient } from "@prisma/client"
+import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 
 const prisma = new PrismaClient()
 
 export async function UploadProduct(formData: FormData) {
+    const session = await getServerSession(authoptions)
+    if(!session?.user?.businessId) return
+
     const name = formData.get("name") as string
     const description = formData.get("description") as string
     const priceStr = formData.get("price") as string
     const quantityStr = formData.get("quantity") as string
     const Photo = formData.get("Photo") as string
-    const BusinessId = "your-business-id-here" // Replace with actual business ID
+    
 
-    if(!name || !priceStr || !quantityStr || !Photo || !BusinessId) return
+    if(!name || !priceStr || !quantityStr || !Photo ) return
 
     const price = parseInt(priceStr)
     const quantity = parseInt(quantityStr)
@@ -25,7 +30,7 @@ export async function UploadProduct(formData: FormData) {
             price: price,
             quantity: quantity,
             Photo: Photo,
-            BusinessId: BusinessId
+            businessId: session.user.businessId
         }
     })
 
