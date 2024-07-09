@@ -8,7 +8,8 @@ const page = () => {
 
 
     return (
-        <div className='h-screen flex justify-center items-center'>
+        <div className=''>
+            {/* centralized later on */}
             <form 
             className='flex gap-2 bg-white p-4 rounded-lg' 
             action={UploadProduct}>
