@@ -10,7 +10,7 @@ const ChangeLogo = ({ Url } : { Url: string}) => {
     return (
         <div className="w-[150px] flex flex-col items-center gap-2 relative">
             <Image 
-            className="rounded-full"
+            className="rounded-full size-[120px]"
             width={120}
             height={120}
             src={url} 

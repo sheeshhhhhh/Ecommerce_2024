@@ -13,7 +13,7 @@ const LogoInput = () => {
             {url && <Image 
             width={120}
             height={120}
-            className='rounded-full'
+            className='rounded-full size-[120px] min-h-[120px] min-w-[120px]'
             src={url} alt='Logo' 
             />}
             {!url && 

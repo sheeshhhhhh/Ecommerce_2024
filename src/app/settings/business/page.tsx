@@ -27,7 +27,9 @@ const page = async () => {
   const business = await getBusiness()
 
   if(business === "Not Authenticated" ) redirect('/api/auth/signin')
-
+  
+  console.log(business)
+    
   return (
     <div>
       <div className='my-4 pl-14'>

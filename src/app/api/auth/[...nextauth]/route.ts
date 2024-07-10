@@ -17,7 +17,8 @@ export const authoptions: AuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_SECRET!,
-        }), // GOOGLE AUTH WORKING!!!
+        }
+        ), // GOOGLE AUTH WORKING!!!
         CredentialsProvider({
             name: 'credentials',
             credentials: {
@@ -40,12 +41,12 @@ export const authoptions: AuthOptions = {
                         userInfo: true
                     }
                 })
+
                 // check if user exist and password exist(if not then it meant that it is an Oauth)
                 if(!user || !user.password) return null
                 const verifiedPassword = bcrypt.compareSync(credentials?.password, user.password)
 
                 if(!verifiedPassword) return null
-                console.log(user)
                 return user 
             }
         })
@@ -55,15 +56,36 @@ export const authoptions: AuthOptions = {
     },
     secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
+        async signIn({ user, account }) {
+            if(account?.provider === 'google') {
+                const userDb = await prisma.user.findUnique({
+                    where: {
+                        id: user.id
+                    },
+                    select: {
+                        business: true
+                    }
+                })
+
+                if(user.business) {
+                    user.business.id = userDb?.business?.id as string
+                }
+            }
+
+            return true
+        },
         async jwt({ token, user })  {
+
             if(user) {
+                console.log(token)
                 token.businessId = user.business?.id,
                 token.userInfo = user.userInfo
             }
 
             return token
         },
-        async session({ token, session}) {
+        async session({ token, session, user}) {
+            
             if(token) {
                 session.user.userInfo = token.userInfo || undefined // still has no userInfo
                 session.user.businessId = token.businessId as string // token.business is and id of the business look at the next-auth.type

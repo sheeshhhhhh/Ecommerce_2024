@@ -8,6 +8,7 @@ const prisma = new PrismaClient()
 
 export async function UploadProduct(formData: FormData) {
     const session = await getServerSession(authoptions)
+    console.log(session)
     if(!session?.user?.businessId) return
 
     const name = formData.get("name") as string
@@ -36,7 +37,6 @@ export async function UploadProduct(formData: FormData) {
 
     if(!uploadItem) return
 
-    console.log(uploadItem)
     redirect(`/item/${uploadItem.item_id}`)
     //DO LATED redirect to newly created product or to the business profile
 }
