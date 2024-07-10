@@ -17,7 +17,8 @@ const ItemCard = ({ item }: ItenCardProps) => {
                 width={150}
                 height={150}
                 src={item.Photo} 
-                alt="" />
+                alt="" 
+                />
             </div>
             <div className="flex flex-col w-full gap-1">
                 <h2 className="mx-1 font-semibold">{item.name}</h2>

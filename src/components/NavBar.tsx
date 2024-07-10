@@ -6,6 +6,8 @@ import Link from 'next/link'
 
 import Settings_Icon from '../../public/Settings_Icon.svg'
 import Logout_Icon from '../../public/Logout_Icon.png'
+import { IoMdPerson } from "react-icons/io";
+
 
 const NavBar = ({
     userInfo
@@ -14,7 +16,7 @@ const NavBar = ({
 }) => {
 
   return (
-    <div className='flex bg-transparent mx-40 p-2 justify-between items-center '>
+    <div className='flex mx-40 p-2 justify-between items-center '>
         <Link href={'/'}
         aria-label='Logo' className='cursor-pointer'>
             <h2 className='font-bold text-3xl'>Ecommerce</h2>
@@ -33,6 +35,12 @@ const NavBar = ({
   )
 }
 
+// next js loader issue 
+// reference https://stackoverflow.com/questions/71392729/next-image-component-url-issue
+const loaderProp = ({ src }: any) => {
+    return src 
+}
+
 const UserIcon = ({
     image,
     name
@@ -40,15 +48,23 @@ const UserIcon = ({
     image?: string | null,
     name?: string | null
 }) => {
+    console.log(image)
+    const encodedImage = image && encodeURI(image)
 
     return(
         <details className=''>
             <summary className='block'>
-                <Image
-                className='rounded-full'
-                src={image ? image : ''} 
-                alt={'.'} 
-                />
+                {encodedImage ? 
+                    <Image
+                    loader={loaderProp(encodedImage)}
+                    width={40}
+                    height={40}
+                    className='rounded-full size-[40px] text-black'
+                    src={encodedImage} 
+                    alt={name || 'User'} 
+                    /> :
+                    <IoMdPerson className='size-[40px] rounded-full' />
+                }
             </summary>
             <div className='bg-white p-2 pr-4 rounded-md flex flex-col gap-1 absolute'>
                 <div 

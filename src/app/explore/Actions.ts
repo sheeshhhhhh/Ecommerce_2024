@@ -45,13 +45,14 @@ export const AddtoCard = async (item_id: string) => {
 
     if(!item_id) return 
 
-    const orderItem = await prisma.orderItem.create({
-        data: {
-            price: 'TODO LATER',
-            quantity: 'TODO LATER',
-            item_id: item_id,
-            order_id: 'TODO LATER',
-            
-        }
-    })
+    // const orderItem = await prisma.orderItem.create({
+    //     data: {
+    //         price: 'TODO LATER',
+    //         quantity: 'TODO LATER',
+    //         item_id: item_id,
+    //         order_id: 'TODO LATER',
+    //     }
+    // })
+
+    // if(!orderItem) return { errro : "failed to order item"}
 }

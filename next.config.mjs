@@ -3,7 +3,12 @@ const nextConfig = {
     images: {
         remotePatterns: [
             {
-                hostname: 'utfs.io' // this is for upload my thing
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com', // this is for google
+                pathname: '/a/**'
+            },
+            {
+                hostname: 'utfs.io', // this is for upload my thing
             }
         ]
     }

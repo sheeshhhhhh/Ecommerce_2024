@@ -16,9 +16,9 @@ const Items = async ({
   if(!items) return 
 
   return (
-    <div className='w-[1300px] mx-auto p-4'>
+    <div className='sm:w-[300px] md:w-[800px] lg:w-[1300px] mx-auto p-4'>
         {search && <h2 className='ml-4 mb-1'>Search for <span className='font-medium'>{search}</span></h2>}
-        <div className='grid grid-cols-5 grid-rows-5 border-t-[1px] border-[#555555cc] 
+        <div className='grid sm:grid-cols-2 grid-cols-3 lg:grid-cols-5 grid-rows-5 border-t-[1px] border-[#555555cc] 
          pt-3 justify-items-center'>
           {items.map((item) => {
             return (
