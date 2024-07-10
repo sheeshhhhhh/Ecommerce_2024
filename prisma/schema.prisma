@@ -107,6 +107,7 @@ model Item {
   item_id     String  @id @default(cuid())
   Photo       String
   name        String
+  category    String?
   description String?
   price       Int
   quantity    Int

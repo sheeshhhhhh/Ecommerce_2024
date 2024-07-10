@@ -8,15 +8,24 @@ export async function GET(
     { params } : { params: { searchName: string} }
 ) {
     const searchName = params.searchName
+
     const searchResultCorrect = await prisma.item.findMany({
         select: {
             name: true
         }, 
         where: {
-            name: searchName
+            name: {
+                contains: searchName,
+                mode: 'insensitive'
+            }
         },
-        take: 10
+        take: 10,
+        
     })
 
-    return NextResponse.json(["Hello", "bruh"], { status: 200 })
+    if(searchResultCorrect.length === 0) {
+        return NextResponse.json([{name: "None found"}]);
+    }
+
+    return NextResponse.json(searchResultCorrect)
 }

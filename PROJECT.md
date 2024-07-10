@@ -18,7 +18,7 @@ bcrypt
 uploadmything - for images
 nextauth - for authentication
 Stripe or anything that can be for payment
-bcrypt -for password hashing
+
 
 #optionl tech stack
 Sentry - for tracking and monitoring

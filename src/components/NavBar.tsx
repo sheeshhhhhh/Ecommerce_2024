@@ -22,7 +22,7 @@ const NavBar = ({
         <div className='flex gap-4 items-center'>
             <Link 
             className='font-semibold text-xl hover:underline hover:underline-offset-2'
-            href={'/explore'}>Explore</Link>
+            href={`/explore?page=1`}>Explore</Link>
             {userInfo ? 
             <UserIcon image={userInfo?.image} name={userInfo?.name} /> : 
             <Link 
