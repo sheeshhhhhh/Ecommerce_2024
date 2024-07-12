@@ -1,6 +1,10 @@
+"use client"
+
 import { Item } from "@prisma/client"
 import Image from "next/image"
 import { TbCurrencyPeso } from "react-icons/tb"
+import IteminfoClient from "./ItemInfo.client"
+
 
 type ItemInfoProps = Partial<Item> & {}
 
@@ -60,46 +64,11 @@ const ItemInfo = ({
             <h2 className="font-bold text-3xl">{price}</h2>
           </div>
         </div>
-        <div className="mt-[25px] px-4 ">
-          <div className="flex flex-col gap-4">
-            <div className="flex min-h-[40px]">
-              <div>
-                <h2 className="w-[110px]">Design</h2>
-              </div>
-              <div className="flex basis-[515px] flex-wrap max-h-[220px] max-w-[515px]">
-                {/* map the designs that is available with pl-10 p-2 border-[1px] mt-2 mr-2 and make the photo absolute 80x40*/}
-              </div>
-            </div>
-            <div className="flex min-h-[40px]">
-              <div>
-                <h2 className="w-[110px]">Size</h2>
-              </div>
-              <div className="flex basis-[515px] flex-wrap max-h-[220px] max-w-[515px]">
-                {/* map the size that is available with p-2 border-[1px] flex justify-center mt-2 mr-2*/}
-              </div>
-            </div>
-            <div className="mt-4 flex justify-start">
-              <h3 className="w-[110px]">Quantity</h3>
-               <div className="flex items-center">
-                <div className="flex mr-[15px] items-center">
-                  <button
-                  className="size-[32px] border-[1px] flex justify-center">
-                    -
-                  </button>
-                  <input 
-                  className="w-[50px] h-[32px] px-[2px] py-[1px] border-[1px]"
-                  type="number" 
-                  />
-                  <button
-                  className="size-[32px] border-[1px] flex justify-center">
-                    +
-                  </button>
-                </div>
-                <h3 className="text-sm">{quantity} pieces available</h3>
-               </div>
-            </div>
-          </div>
-        </div>
+        <IteminfoClient 
+        item_id={item_id}
+        quantity={quantity}
+        price={price}
+        />
       </div>
     </div>
   )
