@@ -20,7 +20,7 @@ const ItemCard = ({ item }: ItenCardProps) => {
                 alt="" 
                 />
             </div>
-            <div className="flex flex-col w-full gap-1">
+            <div className="flex flex-col w-full gap-4">
                 <h2 className="mx-1 font-semibold">{item.name}</h2>
                 {item?.category !== null && <p>#{item.category}</p>}
                 <div className="flex items-center">

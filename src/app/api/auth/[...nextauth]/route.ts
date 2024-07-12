@@ -63,12 +63,14 @@ export const authoptions: AuthOptions = {
                         id: user.id
                     },
                     select: {
-                        business: true
+                        business: true,
+                        userInfo: true
                     }
                 })
 
                 if(user.business) {
                     user.business.id = userDb?.business?.id as string
+                    user.userInfo = userDb?.userInfo || undefined
                 }
             }
 
@@ -98,7 +100,6 @@ export const authoptions: AuthOptions = {
     // pages: {
     //     signIn: '/login',
     // }, // this for custom pages reference:https://next-auth.js.org/configuration/pages
-    debug: process.env.NODE_ENV === "development"
 }
 
 const handler = NextAuth(authoptions);

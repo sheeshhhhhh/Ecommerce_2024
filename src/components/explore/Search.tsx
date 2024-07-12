@@ -58,7 +58,7 @@ const Search = () => {
 
     return (
         <div className={`flex gap-2 bg-white p-1 
-        ${searchResult.length > 0 ? 'rounded-t-lg' : 'rounded-lg'}` }>  
+        ${searchResult.length > 0 ? 'rounded-t-lg' : 'rounded-lg'}` }>
             <form 
             onSubmit={handleSearch}
             className="h-full relative">

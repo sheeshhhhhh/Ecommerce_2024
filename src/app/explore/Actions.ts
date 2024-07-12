@@ -27,11 +27,15 @@ export const getItems = async (page: number, search?: string) => {
 }
 
 export const ViewItem = async (item_id: string) => {
+    
     if(!item_id) return
 
     const item = await prisma.item.findUnique({
         where: {
-            item_id: item_id
+            item_id: item_id,
+        },
+        include: {
+            business:true
         }
     })
 
