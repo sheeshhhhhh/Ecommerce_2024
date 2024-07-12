@@ -50,7 +50,7 @@ const UserIcon = ({
     image?: string | null,
     name?: string | null
 }) => {
-    console.log(image)
+
     const encodedImage = image && encodeURI(image)
 
     return(

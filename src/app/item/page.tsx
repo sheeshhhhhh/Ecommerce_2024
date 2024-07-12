@@ -3,6 +3,7 @@ import { ViewItem } from "@/app/explore/Actions"
 
 import NoItem from "./NoItem"
 import BusinessInfo from "./BusinessInfo"
+import ItemInfo from "./ItemInfo"
 
 
 const page = async ({
@@ -22,7 +23,16 @@ const page = async ({
         <BusinessInfo business={item.business} />
       </div>
       <div>
-        
+        <ItemInfo
+          item_id={item.item_id}
+          Photo={item.Photo}
+          name={item.name}
+          category={item.category}
+          description={item.description}
+          price={item.price}
+          quantity={item.quantity}
+          createAt={item.createAt}
+        />
       </div>
     </div>
   )
