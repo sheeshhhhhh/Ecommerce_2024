@@ -31,7 +31,7 @@ const page = async ({
           description={item.description}
           price={item.price}
           quantity={item.quantity}
-          createAt={item.createAt}
+          createdAt={item.createdAt}
         />
       </div>
     </div>

@@ -12,14 +12,25 @@ export async function POST(request: NextRequest) {
     if(password !== confirmPassword) return new NextResponse("Password not the same", { status: 400 })
 
     const hashPassword = bcrypt.hashSync(password, 10)
-    // create a user in prisma
-    const createUser = await prisma.user.create({
-        data: {
-            name: username,
-            email: username,
-            password: hashPassword
-        }
+    // create a user in prisma transactionn
+    const userCreate:any = await prisma.$transaction(async (txprisma) => {
+
+        const createUser = await txprisma.user.create({
+            data: {
+                name: username,
+                email: username,
+                password: hashPassword
+            }
+        })
+    
+        const createUserInfo = await txprisma.userInfo.create({
+            data: {
+                userId: createUser.id,
+            }
+        })
+        
+        return createUser
     })
 
-    return NextResponse.json(createUser)
+    return NextResponse.json(userCreate)
 }

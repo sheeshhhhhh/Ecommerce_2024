@@ -16,7 +16,7 @@ const ItemInfo = ({
     description,
     price,
     quantity,
-    createAt
+    createdAt
 }: ItemInfoProps) => {
 
   // add to cart function or action add it

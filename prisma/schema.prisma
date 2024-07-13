@@ -23,7 +23,7 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   password      String?
-  email         String    @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
   userInfo      UserInfo?
@@ -43,7 +43,9 @@ model UserInfo {
   address     String?
   gender      Gender?
   birthday    String?
-  cartItems   Order[]
+  
+  cart   Cart?
+  orders       Order[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -117,6 +119,8 @@ model Item {
 
   OrderItems OrderItem[]
 
+  CartItem   CartItem?
+
   createdAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -155,3 +159,24 @@ model OrderItem {
 }
 
 // make a cart item reference: https://chatgpt.com/c/e131f8df-a51d-465f-82b6-bd07c0520d53
+
+model Cart {
+  id        String    @id @default(cuid())
+
+  userInfoId    String      @unique
+  user      UserInfo     @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
+
+  cartItem  CartItem[]
+  createdAt DateTime    @default(now())
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  quantity  Int
+
+  cartId    String   
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  
+  itemId  String     @unique
+  item    Item   @relation(fields: [itemId], references: [item_id], onDelete: Cascade)
+}
