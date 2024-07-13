@@ -1,8 +1,8 @@
 "use client"
-import { cartItem } from "@/types/next-auth";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import CartItem from "./CartItem";
+import { Cartitem } from "@/types/next-auth";
 
 const CartsModal = ({
     size
@@ -22,6 +22,7 @@ const CartsModal = ({
   )
 }
 
+
 const ViewCartModal =  ({
     open,
     setOpen
@@ -29,7 +30,7 @@ const ViewCartModal =  ({
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>
 }) => {
-    const [cartItem, setCartItem] = useState<cartItem>()
+    const [cartItem, setCartItem] = useState<Cartitem>()
 
     useEffect(() => {
         const handlegetCartItem = async () => {
@@ -53,12 +54,15 @@ const ViewCartModal =  ({
         <div className="fixed h-screen w-full inset-0 z-20 overflow-hidden">
             <div onClick={() => setOpen(prev => !prev)}
             className="bg-black opacity-50 h-screen w-full z-20 absolute"></div>
-            <div className={`w-[300px] bg-white z-30 relative 
+            <div className={`w-[350px] bg-white z-30 relative 
             transition-transform duration-500 ease-in delay-150`}>
                 <div className="h-screen">
                     <h2 className="font-bold mb-2 text-3xl p-5 border-b-[2px] mx-3">Cart</h2>
                     {/* map the catItems later but first make model for items and also carts */}
-                    {cartItem?.cartItem?.map((Item) => <CartItem Item={Item} />)}
+                    <div className="flex flex-col items-center gap-4 mt-3">
+                        {cartItem?.cartItem?.map((Item: any) => <CartItem Item={Item} />)}
+                    </div>
+                    
                 </div>
             </div>
         </div>

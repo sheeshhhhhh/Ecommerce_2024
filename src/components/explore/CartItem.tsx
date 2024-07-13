@@ -1,19 +1,43 @@
-import type { CartItem, Item } from "@prisma/client"
+import { CartitemData } from "@/types/next-auth"
+import type { CartItem } from "@prisma/client"
 
+import Image from "next/image"
+import QuantityHandler from "./QuantityHandler"
 
 type CartItemProps = {
-  Item: CartItem
+  Item: CartitemData
 }
 
 const CartItem = ({
   Item
-}: CartItemProps ) => {
+}:  CartItemProps ) => {
   
 
+
   return (
-    <div className="mx-auto">
-      <div className="flex-col">
-        <h2>{Item.}</h2>
+    <div className="mx-auto my-1">
+      <div className="flex justify-between w-[320px] p-1">
+        <div className="flex">
+          <div>
+            <Image
+            className="w-[65px] h-[65px]"
+            width={65}
+            height={65}
+            alt=""
+            src={Item.item.Photo}
+            />
+          </div>
+          <div>
+            <h2 className="font-medium ml-2 w-[175px]">{Item.item.name}</h2>
+            {/* put info of size and design */}
+          </div>
+        </div>
+        <div className="flex flex-col justify-end">
+          <QuantityHandler 
+          quantity={Item.quantity} 
+          cart_id={Item.id}
+          />
+        </div>
       </div>
     </div>
   )

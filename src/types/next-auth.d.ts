@@ -1,4 +1,4 @@
-import type { Business, Cart, CartItem, UserInfo } from "@prisma/client";
+import type { Business, Cart, CartItem, Item, UserInfo } from "@prisma/client";
 import "next-auth";
 import 'next-auth/jwt';
 
@@ -29,10 +29,16 @@ declare module 'next-auth' {
     }
 }
 
-export type CartItem = {
-    cartItem: CartItem & { item: Item}
+
+export type CartitemData = {
+    quantity: number,
+    cartId: string,
+    item: Item,
+    id: string
 }
 
-export interface cartItem extends Partial<Cart> {
-    cartItem: CartItem[]
+export interface Cartitem {
+    id: string,
+    createdAt: Date,
+    cartItem: CartitemData[]
 }

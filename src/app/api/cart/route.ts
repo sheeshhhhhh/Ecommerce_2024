@@ -69,6 +69,7 @@ export async function GET(req: NextRequest) {
             createdAt: true,
             cartItem: {
                 select: {
+                    id: true,
                     quantity: true,
                     cartId: true,
                     item: true
