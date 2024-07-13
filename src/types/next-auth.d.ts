@@ -1,6 +1,12 @@
 import type { Business, UserInfo } from "@prisma/client";
-import { User } from "next-auth";
+import "next-auth";
 import 'next-auth/jwt';
+
+
+interface ExtendedUser extends DefaultUser {
+    business?: Business,
+    userInfo?: userInfo
+}
 
 declare module 'next-auth/jwt' {
     interface JWT {
@@ -11,10 +17,7 @@ declare module 'next-auth/jwt' {
 }
 
 declare module 'next-auth' {
-    interface User {
-        business?: Business,
-        userInfo?: UserInfo
-    }
+    interface User extends ExtendedUser {}
 }
 
 declare module 'next-auth' {

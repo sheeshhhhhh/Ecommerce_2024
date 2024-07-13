@@ -1,7 +1,7 @@
-import NextAuth, { AuthOptions } from 'next-auth'
+import NextAuth, { AuthOptions, User } from 'next-auth'
 
-import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
 
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
@@ -13,6 +13,9 @@ const prisma = new PrismaClient()
 
 export const authoptions: AuthOptions = {
     adapter: PrismaAdapter(prisma) as Adapter,
+    session: {
+        strategy: 'jwt'
+    },
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -22,8 +25,7 @@ export const authoptions: AuthOptions = {
                     scope: 'profile email openid'
                 }
             }
-        }
-        ), // GOOGLE AUTH WORKING!!!
+        }), // GOOGLE AUTH WORKING!!!
         CredentialsProvider({
             name: 'credentials',
             credentials: {
@@ -56,99 +58,46 @@ export const authoptions: AuthOptions = {
             }
         })
     ],
-    session: {
-        strategy: "jwt",
-    },
     secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
-        async signIn({ user, account, profile }) {
+        async jwt({ token, user, profile, account })  {
+            if(token.userInfo) return token
+
+            if(user) {
+                token.businessId = user.business?.id,
+                token.userInfo = user.userInfo
+            }
 
             if(account?.provider === 'google') {
-                // getting the user in the data base update the user that will be use by token
-                const userDb = await prisma.user.findUnique({
+
+                const userDb = await prisma.user.findFirst({
                     where: {
-                        id: user.id
+                        id: token.sub
                     },
                     select: {
                         business: true,
                         userInfo: true
                     }
                 })
-                // still not fixed fix later
-                if(!userDb) {
-                    // if user has just been created then there is no need for it to have a business
-                    const createUser = await prisma.user.create({
-                        data: {
-                            name: user.name,
-                            image: user.image,
-                            email: user.email as string || ''
-                        }
-                    })
-                    
-
-                    const createUserInfo = await prisma.userInfo.create({
-                        data: {
-                            userId: createUser.id
-                        }
-                    })
-
-                    console.log(createUserInfo)
-                    if(!createUserInfo) throw new Error("Failed to create userInfo")
-
-                    user.userInfo = createUserInfo
-                } else if(userDb) {
-                    // if userdb already exist
-                    if(user?.business) {
-                        // might need business id
-                        user.business.id = userDb?.business?.id as string
-                    }
-    
-                    if(!user.userInfo || user.userInfo === null) {
-                        // responsible for creating userinfo which is needed by thr user
-                        // because all the information will be stored in there
-                        const findUserInfo = await prisma.userInfo.findUnique({
-                            where: {
-                                userId: user.id
-                            }
-                        })
-
-                        if(findUserInfo) {
-                            user.userInfo = userDb?.userInfo || undefined
-                        } else {
-                            const createUserInfo = await prisma.userInfo.create({
-                                data: {
-                                    userId: user.id
-                                }
-                            })
-                            
-                            if(!createUserInfo) throw new Error("Failed to create userInfo")
-        
-                            user.userInfo = createUserInfo
-                        }
-                    }
+                if(userDb) {
+                    token.businessId = userDb.business?.id,
+                    token.userInfo = userDb.userInfo || undefined
                 }
             }
-
-            return true
+ 
+            return token 
         },
         async session({ token, session, user}) {
             // google AUth not accepting userInfo and businessId error
-
+            
+           if(token) {
             session.user.userInfo = token.userInfo || undefined // still has no userInfo
             session.user.businessId = token.businessId as string // token.business is and id of the business look at the next-auth.type
             session.user.id = token.sub as string // this is the id (token.sub)
+           }
 
             return session
         },
-        async jwt({ token, user })  {
-            
-            if(user) {
-                token.businessId = user.business?.id,
-                token.userInfo = user.userInfo
-            }
-
-            return token
-        }
     },
     // pages: {
     //     signIn: '/login',
@@ -157,4 +106,4 @@ export const authoptions: AuthOptions = {
 
 const handler = NextAuth(authoptions);
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST }
