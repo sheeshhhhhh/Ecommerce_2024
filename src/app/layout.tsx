@@ -7,9 +7,7 @@ import ProviderSession from "@/context/ProviderSession";
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin'
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
-import NavBar from "@/components/NavBar";
-import { getServerSession } from "next-auth";
-import { authoptions } from "./api/auth/[...nextauth]/route";
+import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +29,9 @@ export default async function RootLayout({
         <body className={inter.className} >
           <NextSSRPlugin
           routerConfig={extractRouterConfig(ourFileRouter)}
+          />
+          <Toaster
+          position="bottom-center" 
           />
           {children}
         </body>

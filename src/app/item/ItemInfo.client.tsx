@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { POST } from "../api/cart/route"
+import toast from "react-hot-toast"
 
 type ItemInfoClientProps = {
     price: number | undefined,
@@ -16,7 +17,7 @@ const IteminfoClient = ({
 
     const handleAddtoCart = async () => {
         try {
-            const res: Response = await fetch('/api/cart', {
+            const res = await fetch('/api/cart', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json'
@@ -30,7 +31,9 @@ const IteminfoClient = ({
             })
 
             const Cart = await res.json()
-            console.log(Cart)
+            
+            setOrderQuantity(1)
+            toast.success("added to cart")
         } catch (error) {
             console.log(error)
         }
@@ -60,7 +63,7 @@ const IteminfoClient = ({
                     <div className="flex items-center">
                     <div className="flex mr-[15px] items-center">
                         <button
-                        onClick={() => setOrderQuantity((prev) => prev - 1)}
+                        onClick={() => setOrderQuantity((prev) => prev - 1 >= 1 ? prev - 1 : prev)}
                         className="size-[32px] border-[1px] flex justify-center">
                         -
                         </button>

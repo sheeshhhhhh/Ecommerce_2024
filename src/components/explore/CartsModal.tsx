@@ -1,8 +1,8 @@
 "use client"
-import { getCartItems } from "@/serverActions/getCartItems";
-import { useSession } from "next-auth/react";
+import { cartItem } from "@/types/next-auth";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
+import CartItem from "./CartItem";
 
 const CartsModal = ({
     size
@@ -29,8 +29,25 @@ const ViewCartModal =  ({
     open: boolean,
     setOpen: Dispatch<SetStateAction<boolean>>
 }) => {
-    const session = useSession()
-    // if(!session?.data?.user) return setOpen(false)
+    const [cartItem, setCartItem] = useState<cartItem>()
+
+    useEffect(() => {
+        const handlegetCartItem = async () => {
+            try {
+                const res: Response = await fetch('/api/cart', {
+                    method: 'GET',
+                    credentials: 'include'
+                })
+    
+                const CartItem = await res.json()
+                
+                setCartItem(CartItem)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        handlegetCartItem()
+    }, [])
 
     return (
         <div className="fixed h-screen w-full inset-0 z-20 overflow-hidden">
@@ -39,8 +56,9 @@ const ViewCartModal =  ({
             <div className={`w-[300px] bg-white z-30 relative 
             transition-transform duration-500 ease-in delay-150`}>
                 <div className="h-screen">
-                    <h2 className="font-bold mb-2 text-lg">Cart</h2>
+                    <h2 className="font-bold mb-2 text-3xl p-5 border-b-[2px] mx-3">Cart</h2>
                     {/* map the catItems later but first make model for items and also carts */}
+                    {cartItem?.cartItem?.map((Item) => <CartItem Item={Item} />)}
                 </div>
             </div>
         </div>

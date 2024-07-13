@@ -8,23 +8,20 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
     const body = await req.json()
     const session = await getServerSession(authoptions)
-    console.log('SESSION:', session)
     if(!session?.user.id) return NextResponse.json({ error : "Not Authenticated"})
 
     const { itemQuantity, item_id, price} = body
     
     if(!itemQuantity || !item_id || !price) return NextResponse.json({ error: "please fill in the fields"})
     
-    prisma.$transaction(async (txprisma) => {
+    const addToCartTransaction = await prisma.$transaction(async (txprisma) => {
         const cartExist = await txprisma.cart.findFirst({
             where: {
                 userInfoId: session?.user.userInfo?.id
             }
         })
 
-        console.log("CartExist:", cartExist)
         if(cartExist) {
-            console.log(cartExist)
             // if cart Exist
             const createCartItem = await txprisma.cartItem.create({
                 data: {
@@ -34,12 +31,12 @@ export async function POST(req: NextRequest) {
                 }
             })
 
-            return  NextResponse.json(createCartItem as CartItem)
+            return createCartItem as CartItem
         } else {
             // if cart Does not exist
             const createCart = await txprisma.cart.create({
                 data: {
-                    userInfoId: session?.user.id
+                    userInfoId: session?.user.userInfo.id
                 }   
             })
 
@@ -51,9 +48,11 @@ export async function POST(req: NextRequest) {
                 }
             })
 
-            return NextResponse.json(createCartItem as CartItem)
+            return createCartItem as CartItem
         }
     })
+
+    return NextResponse.json(addToCartTransaction)
 } 
 
 export async function GET(req: NextRequest) {
@@ -63,7 +62,7 @@ export async function GET(req: NextRequest) {
 
     const getCart = await prisma.cart.findFirst({
         where: {
-            userInfoId: session.user.id
+            userInfoId: session.user.userInfo.id
         },
         select: {
             id: true,
@@ -77,6 +76,8 @@ export async function GET(req: NextRequest) {
             }
         }
     })
+    
+    console.log(getCart)
  // not yet tested and need to get the item info 
     return NextResponse.json(getCart)
 }
