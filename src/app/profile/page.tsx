@@ -36,7 +36,8 @@ const page = async () => {
     return (
         <div className='min-h-screen '>
             <NavBar userInfo={session?.user} />
-            <div className='p-10 flex justify-end pt-32 mx-[250px]'>
+            <div className='p-10 flex justify-end pt-32 mx-[250px]'>    
+                {/* put the cart here in the side */}
                 <div className='bg-white w-[700px] p-7 rounded-lg'>
                     <div className='flex flex-col'>
                         <h2 className='text-2xl font-bold '>Profile</h2>

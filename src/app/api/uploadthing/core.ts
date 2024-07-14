@@ -2,9 +2,12 @@ import { getServerSession } from "next-auth";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { authoptions } from "../auth/[...nextauth]/route";
- 
-const f = createUploadthing();
 
+import { UTApi } from "uploadthing/server";
+
+export const utapi = new UTApi()
+
+const f = createUploadthing();
  
 export const ourFileRouter = {
   

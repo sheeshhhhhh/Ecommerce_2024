@@ -1,12 +1,11 @@
 "use server"
 
 import { PrismaClient } from "@prisma/client"
-import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
 
 export const handleCartQuantity = async (quantity: number, cartid: string): Promise<number> => {
-    console.log(quantity, cartid)
+    
     try {
         const updatedQuantity = await prisma.cartItem.update({
             where: {

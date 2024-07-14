@@ -16,3 +16,16 @@ DATE FORMAT AS STRING
 
 JUST RENAME ITEM MODEL IN PRISMA TO PRODUCT LATERR
 
+
+NOT PERMANENT NOTE!!!!
+
+#Edit profile requirements 
+
+Name
+email
+Avatar
+
+phoneNumber
+address
+gender
+birthday

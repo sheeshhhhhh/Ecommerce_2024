@@ -4,9 +4,11 @@ import { PrismaClient } from "@prisma/client"
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 
+
 const prisma = new PrismaClient()
 
 export async function UploadProduct(formData: FormData) {
+    
     const session = await getServerSession(authoptions)
     console.log(session)
     if(!session?.user?.businessId) return

@@ -8,6 +8,8 @@ import Link from 'next/link'
 
 import Settings_Icon from '../../public/Settings_Icon.svg'
 import Logout_Icon from '../../public/Logout_Icon.png'
+import Profile_Icon from '../../public/Profile_Icon.png'
+
 import { IoMdPerson } from "react-icons/io";
 
 
@@ -39,7 +41,7 @@ const NavBar = ({
 
 // next js loader issue 
 // reference https://stackoverflow.com/questions/71392729/next-image-component-url-issue
-const loaderProp = ({ src }: any) => {
+export const loaderProp = ({ src }: any) => {
     return src 
 }
 
@@ -77,7 +79,7 @@ const UserIcon = ({
                     href={'/profile'}>
                         <Image 
                         className='size-[20px] mr-1'
-                        src={Settings_Icon} alt="" />
+                        src={Profile_Icon} alt="" />
                         profile 
                     </Link>
                 </div>
