@@ -12,7 +12,7 @@ export type profileInfoType = {
   name: string | null,
   email: string | null,
   image: string | null,
-  userInfo: UserInfo | null;
+  userInfo: Partial<UserInfo> | null;
 } | {
   error: string;
 } 
@@ -61,7 +61,7 @@ const page = async () => {
       <div className='my-4 pl-14'>
         <h2 className='text-2xl font-bold'>Edit Profile</h2>
       </div>
-      <div className='py-16 px-10'>
+      <div className='py-16 px-10 w-[680px] flex justify-between'>
         <div className='w-[400px]'>
             <EditProfileInfo 
             profileInfo={profileInfo} 

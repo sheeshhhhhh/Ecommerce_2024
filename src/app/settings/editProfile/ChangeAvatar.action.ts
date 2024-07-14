@@ -1,7 +1,6 @@
 "use server"
 import { utapi } from "@/app/api/uploadthing/core";
 import { PrismaClient } from "@prisma/client";
-import { revalidatePath } from "next/cache";
 
 const prisma = new PrismaClient();
 

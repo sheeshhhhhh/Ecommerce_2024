@@ -17,7 +17,7 @@ export default async function RootLayout({
             <NavBar userInfo={session?.user} />
             <main className="w-full flex justify-center pt-12">
                 <SideBar />
-                <div className="flex h-full justify-start w-full">
+                <div className="flex min-h-screen h-full justify-start w-full">
                     {children}
                 </div>
             </main>
