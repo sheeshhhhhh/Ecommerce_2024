@@ -1,5 +1,4 @@
 import { Gender } from '@prisma/client'
-import React from 'react'
 
 const DiplayGender = ({
     gender
@@ -7,7 +6,7 @@ const DiplayGender = ({
     gender?: Gender | null
 }) => {
 
-    const preselectedGender = ["Male", "Female", "Others"]
+    const preselectedGender = ["Male", "Female", "Other"]
 
     return (
         <div className='flex my-2'>
@@ -26,7 +25,7 @@ const DiplayGender = ({
                             <span>{genderInfo}</span>
                         </div>
                     )
-                    })
+                })
                 }
             </div>
         </div>

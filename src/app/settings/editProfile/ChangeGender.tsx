@@ -15,7 +15,7 @@ const ChangeGender = ({
     setProfile
 } : ChangegenderProps) => {
 
-    const preselectedGender = ['Male', 'Female', 'Others']
+    const preselectedGender = ['Male', 'Female', 'Other']
 
     const handleSetGender = (gender: string) => {
         setProfile({ ...profile, userInfo: {

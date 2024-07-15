@@ -2,17 +2,17 @@ import { getMonth } from '@/utils/getMonthString'
 import React from 'react'
 
 const DisplayBirthday = ({
-    birthday="24_03_2004"
+    birthday="2004-03-24"
 } : {
     birthday?: string | null
 }) => { 
     if (!birthday) return
 
-    const split = birthday?.split('_', 3) 
+    const split = birthday?.split('-', 3) 
 
-    const day = split[0]
+    const day = split[2]
     const month = getMonth(split[1])
-    const year = split[2]
+    const year = split[0]
 
     return (
         <div className='flex my-2'>

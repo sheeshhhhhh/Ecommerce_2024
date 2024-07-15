@@ -6,6 +6,9 @@ import { useState } from "react"
 import { Gender } from "@prisma/client"
 import toast from "react-hot-toast"
 import ChangeGender from "./ChangeGender"
+import ChangeBirthday from "./ChangeBirthday"
+import SaveEditProfile from "./SaveEditProfile"
+import removeNBigInt from "@/utils/removeNBigInt"
 
 type EditProfileInfoProps = {
     profileInfo: profileInfoType
@@ -22,12 +25,14 @@ const EditProfileInfo = ({
         name: profileInfo.name || "",
         email: profileInfo.email || "",
         userInfo: {
-            phoneNumber: profileInfo.userInfo?.phoneNumber,
+            phoneNumber: removeNBigInt(profileInfo.userInfo?.phoneNumber),
             address: profileInfo.userInfo?.address || "",
             gender: profileInfo.userInfo?.gender || "",
             birthday: profileInfo.userInfo?.birthday || ""
         }
     })
+
+    console.log(profileInfo.userInfo?.phoneNumber)
     
     // make phoneNumber Input a component of it's own
     const handleChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +78,8 @@ const EditProfileInfo = ({
             </div>
             <div>
                 <Input 
+                onChange={(e) => setProfile({ ...profile, userInfo: { ...profile.userInfo, address: e.target.value}})}
+                value={profile.userInfo.address}
                 name="address" 
                 label="Main Address" 
                 />
@@ -81,6 +88,16 @@ const EditProfileInfo = ({
             profile={profile}
             setProfile={setProfile}
             gender={profile.userInfo.gender} 
+            />
+            <ChangeBirthday 
+            profile={profile}
+            setProfile={setProfile}
+            birthday={profile.userInfo.birthday}
+            />
+            <SaveEditProfile
+            profileInfo={profileInfo}
+            profile={profile}
+            setProfile={setProfile}
             />
         </div>
     )

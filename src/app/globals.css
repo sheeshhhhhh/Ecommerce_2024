@@ -32,16 +32,17 @@ body {
   }
 }
 
-@layer components {
-  .cartanimation {
-    transform: translateX(-100%);
-  }
-}
-
 @layer base {
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+}
+
+@layer components {
+  .show-spin-buttons::-webkit-inner-spin-button,
+  .show-spin-buttons::-webkit-outer-spin-button {
+    -webkit-appearance: auto;
   }
 }

@@ -1,7 +1,5 @@
 import Image from "next/image"
 
-
-
 const NoProfile = ({
     error
 } : { error : string }) => {

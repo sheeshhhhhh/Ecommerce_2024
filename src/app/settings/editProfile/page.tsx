@@ -55,7 +55,6 @@ const page = async () => {
 
   if(hasError(profileInfo)) return <NoProfile error={profileInfo.error} />
 
-  
   return (
     <div>
       <div className='my-4 pl-14'>
