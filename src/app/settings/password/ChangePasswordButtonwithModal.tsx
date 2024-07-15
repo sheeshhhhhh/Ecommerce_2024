@@ -13,8 +13,9 @@ const ChangePasswordButtonwithModal = ({
     const [modalOpen, setModalOpen] = useState<boolean>(false)
 
     return (
-        <div>
+        <div className="mt-2">
             <button
+            className="p-2 bg-[#555555cc] font-medium rounded-md shadow-md hover:text-white transition-all duration-300"
             onClick={() => setModalOpen(true)}
             >
                 Change Password
@@ -22,6 +23,7 @@ const ChangePasswordButtonwithModal = ({
             {
             modalOpen && 
             <ChangePasswordModal 
+            setModalOpen={setModalOpen}
             id={id} 
             />
             }
