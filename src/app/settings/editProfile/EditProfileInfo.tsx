@@ -31,8 +31,6 @@ const EditProfileInfo = ({
             birthday: profileInfo.userInfo?.birthday || ""
         }
     })
-
-    console.log(profileInfo.userInfo?.phoneNumber)
     
     // make phoneNumber Input a component of it's own
     const handleChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {

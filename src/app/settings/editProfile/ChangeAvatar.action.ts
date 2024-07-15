@@ -5,8 +5,39 @@ import { utapi } from "@/app/api/uploadthing/core";
 import removeNBigInt from "@/utils/removeNBigInt";
 import { PrismaClient, User, UserInfo } from "@prisma/client";
 import { getServerSession } from "next-auth";
+import { profileInfoType } from "./page";
 
 const prisma = new PrismaClient();
+
+export const handleGetProfile: any = async ():Promise<profileInfoType> => {
+    "use server"
+    try {
+      const prisma = new PrismaClient();
+
+      const session = await getServerSession(authoptions)
+      if(!session?.user?.id) return { error : "Not Authenticated" }
+      
+      const profile = await prisma.user.findUnique({
+        where: {
+          id: session.user.id
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+          userInfo: true
+        }
+      })
+      if(!profile) return { error : "No user Found"}
+
+      return profile
+
+    } catch (error) {
+      console.log(error)
+      return { error : "internal server Error" }
+    }
+  }
 
 export const handleChangeAvatar = async (url: string, id: string, previousUrl?: string) => {
     const prismaTransaction = await prisma.$transaction(async (txprisma) => {

@@ -1,11 +1,9 @@
-import { getServerSession } from "next-auth"
 import ChangeAvatar from "./ChangeAvatar"
-import { PrismaClient, UserInfo } from "@prisma/client"
-import { authoptions } from "@/app/api/auth/[...nextauth]/route"
-import { profile } from "console"
 import { hasError } from "@/utils/hasError"
 import NoProfile from "./NoProfile"
 import EditProfileInfo from "./EditProfileInfo"
+import { UserInfo } from "@prisma/client"
+import { handleGetProfile } from "./ChangeAvatar.action"
 
 export type profileInfoType = {
   id: string
@@ -18,36 +16,6 @@ export type profileInfoType = {
 } 
 
 const page = async () => {
-
-  const handleGetProfile: any = async ():Promise<profileInfoType> => {
-    "use server"
-    try {
-      const prisma = new PrismaClient();
-
-      const session = await getServerSession(authoptions)
-      if(!session?.user?.id) return { error : "Not Authenticated" }
-      
-      const profile = await prisma.user.findUnique({
-        where: {
-          id: session.user.id
-        },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          image: true,
-          userInfo: true
-        }
-      })
-      if(!profile) return { error : "No user Found"}
-
-      return profile
-
-    } catch (error) {
-      console.log(error)
-      return { error : "internal server Error" }
-    }
-  }
 
   const profileInfo: profileInfoType = await handleGetProfile()
 
