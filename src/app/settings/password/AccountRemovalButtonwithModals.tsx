@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import DeactivateModal from "./DeactivateModal"
+import DeleteModal from "./DeleteModal"
 
 type AccountRemovalButtonwithModalsProps = {
     id: string
@@ -30,6 +31,7 @@ const AccountRemovalButtonwithModals = ({
                 Delete Account
             </button>
             {deactivateModalOpen && <DeactivateModal id={id} setDeactivateModalOpen={setDeactivateModalOpen} />}
+            {deleteModalOpen && <DeleteModal id={id} setDeleteModalOpen={setDeleteModalOpen} />}
         </div>
     )
 }

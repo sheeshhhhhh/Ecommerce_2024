@@ -42,3 +42,11 @@ export interface Cartitem {
     createdAt: Date,
     cartItem: CartitemData[]
 }
+
+export type AuthProviderResponse = {
+    accounts: {
+        provider: string;
+    }[];
+} | {
+    error: string;
+};
