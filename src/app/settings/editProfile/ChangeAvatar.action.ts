@@ -2,7 +2,6 @@
 
 import { authoptions } from "@/app/api/auth/[...nextauth]/route";
 import { utapi } from "@/app/api/uploadthing/core";
-import removeNBigInt from "@/utils/removeNBigInt";
 import { PrismaClient, User, UserInfo } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { profileInfoType } from "./page";

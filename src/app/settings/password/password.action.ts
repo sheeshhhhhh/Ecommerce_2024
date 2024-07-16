@@ -38,14 +38,14 @@ export const changePassword = async (id: string, previousPassword: string, newPa
 
     if(!verifyPassword) return { error : "Wrong Password" }
 
-    const hashPassword = bcrypt.hashSync(newPassword, 10)
+    const newHashPassword = bcrypt.hashSync(newPassword, 10)
 
     const updatePassword = await prisma.user.update({
         where: {
             id: id
         },
         data: {
-            password: newPassword
+            password: newHashPassword
         }
     })
 

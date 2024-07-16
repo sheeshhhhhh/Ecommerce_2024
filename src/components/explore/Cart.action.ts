@@ -5,8 +5,8 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient();
 
 export const handleCartQuantity = async (quantity: number, cartid: string): Promise<number> => {
-    
     try {
+
         const updatedQuantity = await prisma.cartItem.update({
             where: {
                 id: cartid

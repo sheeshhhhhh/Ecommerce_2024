@@ -1,8 +1,10 @@
 "use client"
+
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import CartItem from "./CartItem";
-import { Cartitem } from "@/types/next-auth";
+import { Cartitem, CartitemData } from "@/types/next-auth";
+import { TbCurrencyPeso } from "react-icons/tb";
 
 const CartsModal = ({
     size
@@ -31,9 +33,22 @@ const ViewCartModal =  ({
     setOpen: Dispatch<SetStateAction<boolean>>
 }) => {
     const [cartItem, setCartItem] = useState<Cartitem>()
+    const [selectedCart, setSelectedCart] = useState<string[]>([])
+    const [totalPrice, setTotalPrice] = useState<number>(0)
+
+    const handleTotalPrice = (CartItem: Cartitem) => {
+        setTotalPrice(0) // always reset the price
+
+        CartItem.cartItem.forEach((item) => {
+            const selected =  selectedCart.includes(item.id)
+            if(!selected) return
+            setTotalPrice((prev) => prev + (item.item.price * item.quantity))
+        })
+    }
 
     useEffect(() => {
         const handlegetCartItem = async () => {
+            
             try {
                 const res: Response = await fetch('/api/cart', {
                     method: 'GET',
@@ -42,27 +57,94 @@ const ViewCartModal =  ({
     
                 const CartItem = await res.json()
                 
+                handleTotalPrice(CartItem)
+
                 setCartItem(CartItem)
             } catch (error) {
                 console.log(error)
             }
         }
         handlegetCartItem()
-    }, [])
+    }, [selectedCart])
+
+    const handleSelect = (id: string, status: string) => {
+        if(status === 'unselect') {
+            const arrCopy = [...selectedCart]
+            const removedArr = arrCopy.filter((cartid) => id !== cartid)
+            
+            setSelectedCart(removedArr)
+        } else {
+            setSelectedCart([...selectedCart, id])
+        }
+    }
+
+    const handleSelectAll = () => {
+        setSelectedCart([])
+
+        if(selectedCart.length ===  cartItem?.cartItem.length) return
+
+        cartItem?.cartItem.forEach((item) => {
+            setSelectedCart((prev) => [...prev, item.id])
+        })
+    }  
 
     return (
         <div className="fixed h-screen w-full inset-0 z-20 overflow-hidden">
             <div onClick={() => setOpen(prev => !prev)}
             className="bg-black opacity-50 h-screen w-full z-20 absolute"></div>
-            <div className={`w-[350px] bg-white z-30 relative 
-            transition-transform duration-500 ease-in delay-150`}>
-                <div className="h-screen">
+            <div className={`w-[400px]  px-3 h-screen bg-white z-30 relative 
+            animate-in slide-in-from-left-40 duration-500`}>
+                <div className="h-[750px]">
                     <h2 className="font-bold mb-2 text-3xl p-5 border-b-[2px] mx-3">Cart</h2>
                     {/* map the catItems later but first make model for items and also carts */}
                     <div className="flex flex-col items-center gap-4 mt-3">
-                        {cartItem?.cartItem?.map((Item: any) => <CartItem Item={Item} />)}
+                        {cartItem?.cartItem?.map((Item: CartitemData) => {
+
+                            const selected = selectedCart.includes(Item.id)
+                            
+                            return (
+                                <div className="flex items-center">
+                                    <input 
+                                    checked={selected}
+                                    className="size-5 mr-3"
+                                    onChange={(e) => handleSelect(Item.id, selected ? 'unselect' 
+                                    : 'select')}
+                                    // value={selected} 
+                                    type="checkbox" 
+                                    />
+                                    <CartItem Item={Item} />
+                                </div>
+                            )
+                        })}
                     </div>
-                    
+                </div>
+                <div className="h-full">
+                    <div className="flex">
+                        <div className="flex">
+                            <input 
+                            checked={selectedCart.length ===  cartItem?.cartItem.length}
+                            onClick={() => handleSelectAll()}
+                            className="size-5" type="checkbox" />
+                            <button 
+                            onClick={() => handleSelectAll()}
+                            className="px-[6px]">
+                                Select All ({cartItem?.cartItem.length})
+                            </button>
+                        </div>
+                        <div>
+                            {/* delete */}
+                        </div>
+                        <div className="flex items-center">
+                            <h2 className="mr-1 font-medium">Total ({selectedCart.length} item):</h2>
+                            <div className="flex items-center">
+                                <TbCurrencyPeso size={20} />
+                                <h1 className="font-medium">{totalPrice}</h1>
+                            </div>
+                        </div>
+                        <div>
+                            {/* check out */}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

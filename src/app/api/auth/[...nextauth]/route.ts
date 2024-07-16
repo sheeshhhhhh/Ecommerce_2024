@@ -8,6 +8,7 @@ import { PrismaClient } from '@prisma/client'
 import { Adapter } from 'next-auth/adapters'
 
 import bcrypt from 'bcrypt'
+import removeNBigInt from '@/utils/removeNBigInt'
 
 const prisma = new PrismaClient()
 
@@ -70,7 +71,7 @@ export const authoptions: AuthOptions = {
 
             if(account?.provider === 'google') {
 
-                const userDb = await prisma.user.findFirst({
+                let userDb: any = await prisma.user.findFirst({
                     where: {
                         id: token.sub
                     },
@@ -79,6 +80,11 @@ export const authoptions: AuthOptions = {
                         userInfo: true
                     }
                 })
+
+                if(userDb?.userInfo?.phoneNumber) {
+                    userDb.userInfo.phoneNumber = removeNBigInt(userDb?.userInfo?.phoneNumber)
+                }
+                
                 if(userDb) {
                     token.businessId = userDb.business?.id,
                     token.userInfo = userDb.userInfo || undefined
@@ -91,9 +97,9 @@ export const authoptions: AuthOptions = {
             // google AUth not accepting userInfo and businessId error
             
            if(token) {
-            session.user.userInfo = token.userInfo || undefined // still has no userInfo
-            session.user.businessId = token.businessId as string // token.business is and id of the business look at the next-auth.type
-            session.user.id = token.sub as string // this is the id (token.sub)
+                session.user.userInfo = token.userInfo || undefined // still has no userInfo
+                session.user.businessId = token.businessId as string // token.business is and id of the business look at the next-auth.type
+                session.user.id = token.sub as string // this is the id (token.sub)
            }
 
             return session

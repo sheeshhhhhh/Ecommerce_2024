@@ -93,6 +93,7 @@ const IteminfoClient = ({
                         Add to Cart
                     </button>
                     <button
+                    
                     className="px-5 h-[48px] w-[180px] flex justify-center shadow-xl
                     items-center bg-slate-300 font-semibold hover:bg-slate-200"
                     >

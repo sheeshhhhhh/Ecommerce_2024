@@ -30,6 +30,7 @@ const ItemInfo = ({
       >
         <div className="size-[450px] flex flex-col">
           <Image
+          className="size-[450px]"
           height={450}
           width={450} 
           src={encodedPhoto || ""}

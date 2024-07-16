@@ -18,11 +18,36 @@ export async function POST(req: NextRequest) {
         const cartExist = await txprisma.cart.findFirst({
             where: {
                 userInfoId: session?.user.userInfo?.id
+            },
+            select: {
+                id: true,
+                cartItem: {
+                    select: {
+                        itemId: true
+                    }
+                }
             }
         })
-
+        
         if(cartExist) {
             // if cart Exist
+
+            // check if the item exist in the cart
+            const itemIntheCart = cartExist?.cartItem.find((item) => item.itemId === item_id )
+
+            // if item already exist in the cart we just increment it
+            if(itemIntheCart) return await txprisma.cartItem.update({
+                where: {
+                    itemId: item_id
+                }, 
+                data: {
+                    quantity: {
+                        increment: itemQuantity
+                    }
+                }
+            })
+
+            // create item in the cart if not yet existed in the cart
             const createCartItem = await txprisma.cartItem.create({
                 data: {
                     cartId: cartExist.id,
@@ -58,7 +83,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authoptions)
 
-    if(!session?.user.id) return NextResponse.json({ error : "Not Authenticated"})
+    if(!session?.user?.userInfo?.id) return NextResponse.json({ error : "Not Authenticated"})
 
     const getCart = await prisma.cart.findFirst({
         where: {
@@ -78,7 +103,5 @@ export async function GET(req: NextRequest) {
         }
     })
     
-    console.log(getCart)
- // not yet tested and need to get the item info 
     return NextResponse.json(getCart)
 }
