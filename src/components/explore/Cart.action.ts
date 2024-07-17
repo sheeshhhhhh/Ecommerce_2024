@@ -22,3 +22,32 @@ export const handleCartQuantity = async (quantity: number, cartid: string): Prom
         return quantity
     }
 }
+
+export const handleDeleteCart = async (idArr: string[]) => {
+
+    if(!idArr) return
+    
+    
+    const deleteTransaction = await prisma.$transaction(async (txprisma) => {
+        try {
+
+            await Promise.all(
+                idArr.map(async (id) => {
+                    return txprisma.cartItem.delete({
+                        where: {
+                            id: id
+                        }
+                    });
+                })
+            );
+            
+            return idArr
+
+        } catch (error) {
+            return 
+        }
+    })
+    console.log(deleteTransaction)
+
+    return deleteTransaction
+}

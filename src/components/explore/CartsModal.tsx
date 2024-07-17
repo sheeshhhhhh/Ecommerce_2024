@@ -5,6 +5,8 @@ import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import CartItem from "./CartItem";
 import { Cartitem, CartitemData } from "@/types/next-auth";
 import { TbCurrencyPeso } from "react-icons/tb";
+import { handleDeleteCart } from "./Cart.action";
+import toast from "react-hot-toast";
 
 const CartsModal = ({
     size
@@ -88,64 +90,90 @@ const ViewCartModal =  ({
         })
     }  
 
+    const handleDelete = async (idArr: string[]) => {
+        const deletedArr = await handleDeleteCart(idArr)
+
+        if(!deletedArr) return toast.error('Failed to delete')
+
+        deletedArr.forEach((id) => {
+            const arrCopy = [...selectedCart]
+            const removedArr = arrCopy.filter((cartid) => id !== cartid)
+            
+            setSelectedCart(removedArr)
+        })
+    }
+
     return (
         <div className="fixed h-screen w-full inset-0 z-20 overflow-hidden">
             <div onClick={() => setOpen(prev => !prev)}
             className="bg-black opacity-50 h-screen w-full z-20 absolute"></div>
-            <div className={`w-[400px]  px-3 h-screen bg-white z-30 relative 
-            animate-in slide-in-from-left-40 duration-500`}>
-                <div className="h-[750px]">
-                    <h2 className="font-bold mb-2 text-3xl p-5 border-b-[2px] mx-3">Cart</h2>
-                    {/* map the catItems later but first make model for items and also carts */}
-                    <div className="flex flex-col items-center gap-4 mt-3">
-                        {cartItem?.cartItem?.map((Item: CartitemData) => {
+                <div className={`w-[400px]  px-3 h-screen bg-white z-30 relative 
+                animate-in slide-in-from-left-40 duration-500`}>
+                    <div className="h-[750px]">
+                        <h2 className="font-bold mb-2 text-3xl p-5 border-b-[2px] mx-3">Cart</h2>
+                        {/* map the catItems later but first make model for items and also carts */}
+                        <div className="flex flex-col items-center gap-4 mt-3">
+                            {cartItem?.cartItem?.map((Item: CartitemData) => {
 
-                            const selected = selectedCart.includes(Item.id)
-                            
-                            return (
-                                <div className="flex items-center">
-                                    <input 
-                                    checked={selected}
-                                    className="size-5 mr-3"
-                                    onChange={(e) => handleSelect(Item.id, selected ? 'unselect' 
-                                    : 'select')}
-                                    // value={selected} 
-                                    type="checkbox" 
-                                    />
-                                    <CartItem Item={Item} />
-                                </div>
-                            )
-                        })}
+                                const selected = selectedCart.includes(Item.id)
+                                
+                                return (
+                                    <div className="flex items-center">
+                                        <input 
+                                        checked={selected}
+                                        className="size-5 mr-3"
+                                        onChange={(e) => handleSelect(Item.id, selected ? 'unselect' 
+                                        : 'select')}
+                                        // value={selected} 
+                                        type="checkbox" 
+                                        />
+                                        <CartItem Item={Item} />
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
-                </div>
-                <div className="h-full">
-                    <div className="flex">
+                    <div className="h-full">
                         <div className="flex">
-                            <input 
-                            checked={selectedCart.length ===  cartItem?.cartItem.length}
-                            onClick={() => handleSelectAll()}
-                            className="size-5" type="checkbox" />
-                            <button 
-                            onClick={() => handleSelectAll()}
-                            className="px-[6px]">
-                                Select All ({cartItem?.cartItem.length})
+
+                            <div className="flex items-center">
+                                <input 
+                                checked={selectedCart.length ===  cartItem?.cartItem.length}
+                                onClick={() => handleSelectAll()}
+                                className="size-5" type="checkbox" />
+                                <button 
+                                onClick={() => handleSelectAll()}
+                                className="px-[6px]">
+                                    Select All ({cartItem?.cartItem.length})
+                                </button>
+                            </div>
+
+                            <div>
+                                <button 
+                                onClick={() => handleDelete(selectedCart)}
+                                className="py-[1px] px-[6px] mx-2"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+
+                            <div className="flex items-center">
+                                <h2 className="mr-1 font-medium">Total ({selectedCart.length} item):</h2>
+                                <div className="flex items-center">
+                                    <TbCurrencyPeso size={20} />
+                                    <h1 className="font-medium">{totalPrice}</h1>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div className="flex justify-center">
+                            <button>
+                                Check Out
                             </button>
                         </div>
-                        <div>
-                            {/* delete */}
-                        </div>
-                        <div className="flex items-center">
-                            <h2 className="mr-1 font-medium">Total ({selectedCart.length} item):</h2>
-                            <div className="flex items-center">
-                                <TbCurrencyPeso size={20} />
-                                <h1 className="font-medium">{totalPrice}</h1>
-                            </div>
-                        </div>
-                        <div>
-                            {/* check out */}
-                        </div>
+
                     </div>
-                </div>
             </div>
         </div>
     )
