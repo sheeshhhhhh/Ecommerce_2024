@@ -8,6 +8,7 @@ import { TbCurrencyPeso } from "react-icons/tb";
 import { handleDeleteCart } from "./Cart.action";
 import toast from "react-hot-toast";
 import CheckoutModalwithButton from "./CheckoutModal";
+import getSelectedItem from "@/utils/getSelectedItem";
 
 const CartsModal = ({
     size
@@ -168,7 +169,9 @@ const ViewCartModal =  ({
 
                         </div>
 
-                        <CheckoutModalwithButton />
+                        <CheckoutModalwithButton 
+                        selectedCart={getSelectedItem(selectedCart, cartItem?.cartItem)}
+                        />
                         
                     </div>
             </div>

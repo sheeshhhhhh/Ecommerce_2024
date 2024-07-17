@@ -1,19 +1,25 @@
 "use client"
 
-import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from "react"
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react"
 import Input from "../Input"
 import { getShippingInfo } from "./Cart.action"
 import removeNBigInt from "@/utils/removeNBigInt"
+import { CartitemData } from "@/types/next-auth"
+import ReviewModal from "./ReviewModal"
 
+type CheckoutModalwithButtonProps = {
+    selectedCart: CartitemData[] | undefined
+}
 
 const CheckoutModalwithButton = ({
-    
-}) => {
+    selectedCart
+} : CheckoutModalwithButtonProps) => {
     const [openModal, setOpenModal] = useState<boolean>(false)
 
     return (
         <div className="flex justify-center">
             <button
+            disabled={selectedCart?.length === 0}
             onClick={() => setOpenModal(true)}
             className="w-[250px] bg-[#555555cc] p-3 font-bold rounded-lg mt-3 shadow-xl
             hover:text-white transition-colors duration-300"
@@ -22,6 +28,7 @@ const CheckoutModalwithButton = ({
                 Check Out
             </button>
             <CheckOutModal 
+            selectedCart={selectedCart}
             openModal={openModal} 
             setOpenModal={setOpenModal}  
             />
@@ -34,15 +41,17 @@ enum paymentMethod {
     'Online Payment'
 }
 
-type CheckOutModalProps = {
+interface CheckOutModalProps extends CheckoutModalwithButtonProps {
     openModal: boolean,
     setOpenModal: Dispatch<SetStateAction<boolean>>
 }
 
 const CheckOutModal = ({
     openModal,
-    setOpenModal
+    setOpenModal,
+    selectedCart
 } : CheckOutModalProps) => {
+    const [reviewModal, setReviewModal] = useState<boolean>(false)
     const [shippingInfo, setShippingInfo] = useState({
         name: "",
         address: "",
@@ -75,19 +84,38 @@ const CheckOutModal = ({
         })
     }
 
+    const handleReview = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        setReviewModal(true)
+    }
+
+    const handleCancelModal = () => {
+        reviewModal ? setReviewModal(false) : setOpenModal(false)
+    }
+
     const shippingselection = ['lalamove', 'J&T Express', 'SPCX Express']
 
-    if(!openModal) return 
+    if(!openModal || !selectedCart) return 
 
     return (
         <div className="fixed top-0 left-0 h-screen w-full flex justify-center items-center">
             
-            <div onClick={() => setOpenModal(false)}
+            <div onClick={() => handleCancelModal()}
             className="absolute h-screen w-full bg-black opacity-50 z-30 animate-in fade-in-20">
             </div>
 
+            {
+            reviewModal ?
+            <ReviewModal 
+            shippingInfo={shippingInfo}
+            selectedCart={selectedCart}
+            />
+            :
             <div className="w-[450px] p-4 shadow-md bg-white rounded-lg z-40 animate-in zoom-in-75 duration-300">
-                <form className="flex flex-col gap-2 items-center">
+                <form
+                onSubmit={handleReview}
+                className="flex flex-col gap-2 items-center">
                     <h1 className="font-bold text-xl mb-1">Shipping Information</h1>
 
                     <Input 
@@ -168,11 +196,14 @@ const CheckOutModal = ({
                         </div>
                     </div>
                     
-                    <button className="w-[300px] p-2 bg-[#555555cc] rounded-md mt-4">
+                    <button
+                    type="submit"
+                    className="w-[300px] p-2 bg-[#555555cc] rounded-md mt-4">
                         Review Order
                     </button>
                 </form>
             </div>
+            }
         </div>
     )
 }
