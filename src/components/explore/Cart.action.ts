@@ -1,6 +1,9 @@
 "use server"
 
+import { authoptions } from "@/app/api/auth/[...nextauth]/route";
 import { PrismaClient } from "@prisma/client"
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 const prisma = new PrismaClient();
 
@@ -47,7 +50,27 @@ export const handleDeleteCart = async (idArr: string[]) => {
             return 
         }
     })
-    console.log(deleteTransaction)
 
     return deleteTransaction
+}
+
+export const getShippingInfo = async () => {
+    const session = await getServerSession(authoptions)
+    
+    if(!session?.user) return redirect('/api/auth/signIn')
+
+    return await prisma.user.findUnique({
+        where: {
+            id: session.user.id
+        },
+        select: {
+            name: true,
+            userInfo: {
+                select: {
+                    address: true,
+                    phoneNumber: true
+                }
+            }
+        }
+    })
 }

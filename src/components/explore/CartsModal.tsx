@@ -7,6 +7,7 @@ import { Cartitem, CartitemData } from "@/types/next-auth";
 import { TbCurrencyPeso } from "react-icons/tb";
 import { handleDeleteCart } from "./Cart.action";
 import toast from "react-hot-toast";
+import CheckoutModalwithButton from "./CheckoutModal";
 
 const CartsModal = ({
     size
@@ -151,7 +152,7 @@ const ViewCartModal =  ({
                             <div>
                                 <button 
                                 onClick={() => handleDelete(selectedCart)}
-                                className="py-[1px] px-[6px] mx-2"
+                                className="py-[1px] px-[6px] mx-2 hover:underline hover:underline-offset-2"
                                 >
                                     Delete
                                 </button>
@@ -167,12 +168,8 @@ const ViewCartModal =  ({
 
                         </div>
 
-                        <div className="flex justify-center">
-                            <button>
-                                Check Out
-                            </button>
-                        </div>
-
+                        <CheckoutModalwithButton />
+                        
                     </div>
             </div>
         </div>

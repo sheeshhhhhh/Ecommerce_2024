@@ -130,6 +130,8 @@ model Order {
   adress    String
   totalPrice    Int
   totalQuantity Int
+  shippingMethod String
+  paymentMethod  String // might be paymentMethod type search mo later
   
   OrderItems   OrderItem[]
 
