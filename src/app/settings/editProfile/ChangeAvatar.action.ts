@@ -87,11 +87,18 @@ export const handleChangeProfileInfo = async (profileInfo: any ) => {
 
         })
 
-        const updateUserInfo = await txprsima.userInfo.update({
+        const updateUserInfo = await txprsima.userInfo.upsert({
             where: {
                 userId: session?.user?.id
             },
-            data: {
+            create: {
+                userId: session?.user?.id,
+                phoneNumber: profileInfo.userInfo.phoneNumber,
+                address: profileInfo.userInfo.address,
+                gender: profileInfo.userInfo.gender,
+                birthday: profileInfo.userInfo.birthday
+            },
+            update: {
                 phoneNumber: profileInfo.userInfo.phoneNumber,
                 address: profileInfo.userInfo.address,
                 gender: profileInfo.userInfo.gender,

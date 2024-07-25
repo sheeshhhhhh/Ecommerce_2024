@@ -32,7 +32,6 @@ const ChangePasswordModal = ({
         const result = await changePassword(id, passwordInfo.password,
             passwordInfo.newPassword, passwordInfo.confirmPassword)
             
-        console.log(result)
         if(result?.error) return toast.error(result.error, { position: 'top-center' })
     }
 

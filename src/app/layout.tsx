@@ -8,6 +8,7 @@ import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin'
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { Toaster } from 'react-hot-toast'
+import QueryProvider from "@/context/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,19 +23,20 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-
   return (
     <html lang="en">
       <ProviderSession>
-        <body className={inter.className} >
-          <NextSSRPlugin
-          routerConfig={extractRouterConfig(ourFileRouter)}
-          />
-          <Toaster
-          position="bottom-center" 
-          />
-          {children}
-        </body>
+        <QueryProvider>
+          <body className={inter.className} >
+            <NextSSRPlugin
+            routerConfig={extractRouterConfig(ourFileRouter)}
+            />
+            <Toaster
+            position="bottom-center" 
+            />
+            {children}
+          </body>
+        </QueryProvider>
       </ProviderSession>
     </html>
   );

@@ -26,6 +26,7 @@ model User {
   email         String?    @unique
   emailVerified DateTime?
   image         String?
+  multifactor   Boolean?
   userInfo      UserInfo?
   business      Business?
   accounts      Account[]
@@ -97,7 +98,7 @@ model Business {
   logoUrl      String
   CoverPhotoUrl String?
  
-  Orders       Order[]
+  OrderItem       OrderItem[]
 
   Items        Item[]
   owner        User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
@@ -127,7 +128,7 @@ model Item {
 
 model Order {
   order_id  String @id @default(cuid())
-  adress    String
+  address    String
   totalPrice    Int
   totalQuantity Int
   shippingMethod String
@@ -138,11 +139,8 @@ model Order {
   userInfoId String
   userInfo   UserInfo? @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
 
-  BusinessId  String
-  business   Business @relation(fields: [BusinessId], references: [id], onDelete: Cascade)
-
-  createdAt  DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model OrderItem {
@@ -155,6 +153,9 @@ model OrderItem {
 
   item_id   String
   item      Item    @relation(fields: [item_id], references: [item_id], onDelete: Cascade)
+
+  businessId String
+  Business   Business @relation(fields: [businessId], references: [id])
 
   createdAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
