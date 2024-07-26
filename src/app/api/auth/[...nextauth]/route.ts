@@ -12,6 +12,7 @@ import removeNBigInt from '@/utils/removeNBigInt'
 
 const prisma = new PrismaClient()
 
+
 export const authoptions: AuthOptions = {
     adapter: PrismaAdapter(prisma) as Adapter,
     session: {
@@ -32,9 +33,11 @@ export const authoptions: AuthOptions = {
             credentials: {
                 username: { label: "Username", type: "text", placeholder: "renn44"},
                 password: { label: "Password", type: "password"},
+                // add otp here later on
             },
             authorize: async (credentials, req): Promise<any> => {
                 if(!credentials?.password || !credentials.username) return null
+                
                 const user = await prisma.user.findFirst({
                     where: {
                         name: credentials?.username
@@ -46,16 +49,25 @@ export const authoptions: AuthOptions = {
                         image: true,
                         password: true,
                         business: true,
-                        userInfo: true
+                        userInfo: true,
+                        totpSecret: true,
+                        multifactor: true
                     }
                 })
-
+                
                 // check if user exist and password exist(if not then it meant that it is an Oauth)
                 if(!user || !user.password) return null
                 const verifiedPassword = bcrypt.compareSync(credentials?.password, user.password)
 
                 if(!verifiedPassword) return null
-                return user 
+
+                // handle OTP 2fa authentication
+                if(user.multifactor && user.email) {
+                   //verify the otp here
+                } else {
+                    // for no 2fa authentication
+                    return user 
+                }
             }
         })
     ],
@@ -105,9 +117,9 @@ export const authoptions: AuthOptions = {
             return session
         },
     },
-    // pages: {
-    //     signIn: '/login',
-    // }, // this for custom pages reference:https://next-auth.js.org/configuration/pages
+    pages: {
+        signIn: '/login',
+    }, // this for custom pages reference:https://next-auth.js.org/configuration/pages
 }
 
 const handler = NextAuth(authoptions);

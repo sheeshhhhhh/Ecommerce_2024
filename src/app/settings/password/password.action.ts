@@ -1,10 +1,8 @@
 "use server"
-import { PrismaClient } from "@prisma/client";
-import { getServerSession } from "next-auth";
-import { authoptions } from "@/app/api/auth/[...nextauth]/route";
-import bcrypt, { compareSync } from 'bcrypt'
-import { verify } from "crypto";
 import { AuthProviderResponse } from "@/types/next-auth";
+import { generateOTPSecret } from "@/utils/lib/GenerateOTPsecret";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -67,7 +65,7 @@ export const getAuthProvider = async (id: string): Promise<AuthProviderResponse>
             }
         }
     })
-    console.log(getAuthProvider)
+
     if(!getAuthProvider) return { error : "Can't find account" }
     
     return getAuthProvider
@@ -120,4 +118,65 @@ export const deactivateAccount = async (id: string) => {
     // if(!deactivateUser) return { error : "Failed to deactivate Account" }
 
     // redirect to login or home
+}
+
+export const changeMultifactor = async (id: string, password?: string) => {
+    if(!id) return { error : "No Id provided" }
+
+    const getUser = await prisma.user.findUnique({
+        where: {
+            id: id
+        }, 
+        select: {
+            password: true,
+            multifactor: true,
+            accounts: {
+                select: {
+                    provider: true
+                }
+            }
+        }
+    })
+
+    const totpSecret = generateOTPSecret()
+
+    if(getUser?.accounts && getUser?.accounts[0]?.provider === 'google') { 
+        const updateMultiFactor = await prisma.user.update({
+            where: {
+                id: id
+            },
+            data: {
+                multifactor: getUser?.multifactor ? !getUser?.multifactor : true,
+                totpSecret: totpSecret
+            },
+            select: {
+                multifactor: true
+            }
+        })
+        
+        return updateMultiFactor
+    } else {
+        
+        if(!password) return { error : "please fill in the password" }
+
+        const verifyPassword = bcrypt.compareSync(password, getUser?.password!)
+
+        if(!verifyPassword) return { error : "Wrong password" }
+
+        const updateMultiFactor = await prisma.user.update({
+            where: {
+                id: id
+            },
+            data: {
+                multifactor: getUser?.multifactor ? !getUser?.multifactor : true,
+                totpSecret: totpSecret 
+            },
+            select: {
+                multifactor: true
+            }
+        })
+        
+    
+        return updateMultiFactor
+    }
 }

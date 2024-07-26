@@ -5,7 +5,9 @@ import 'next-auth/jwt';
 // for next auth
 interface ExtendedUser extends DefaultUser {
     business?: Business,
-    userInfo?: userInfo
+    userInfo?: userInfo,
+    multifactor: boolean | null,
+    totpSecret: string | null
 }
 
 declare module 'next-auth/jwt' {
@@ -24,7 +26,8 @@ declare module 'next-auth' {
     interface Session {
         user: User & {
             businessId?: string,
-            userInfo?: UserInfo
+            userInfo?: UserInfo,
+
         }
     }
 }

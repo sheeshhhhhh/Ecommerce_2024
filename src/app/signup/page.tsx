@@ -1,4 +1,5 @@
 "use client"
+
 import Input from '@/components/Input'
 import { useRouter } from 'next/navigation'
 import { FormEvent, useState } from 'react'
@@ -9,7 +10,7 @@ type signUpType = {
     confirmPassword: string
 }
 
-const page = () => {
+const Page = () => {
     const router = useRouter()
     const [data, setData] = useState<signUpType>({
         username: '',
@@ -87,4 +88,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
